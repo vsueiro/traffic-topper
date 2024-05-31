@@ -1,0 +1,171 @@
+:root {
+  --cell: calc(100vw / 12);
+  --easeOutBack: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transitionDuration: 0.2s;
+}
+
+@media (min-width: 576px) {
+  :root {
+    --cell: calc(576px / 12);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+}
+
+html,
+body {
+  background: RebeccaPurple;
+  height: 100%;
+  overflow: hidden;
+}
+
+#game {
+  aspect-ratio: 2/1;
+  /* background: rebeccapurple; */
+  margin: 16px auto;
+  max-width: 576px;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+}
+
+.taxi {
+  position: absolute;
+  transition: all var(--transitionDuration) var(--easeOutBack);
+  z-index: 10;
+}
+
+.taxi::before {
+  background: Tomato;
+  border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
+    calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
+  bottom: calc(var(--cell) * 0.5);
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.wheels {
+  /* background: black; */
+  bottom: 0;
+  position: absolute;
+  top: 100%;
+  transition: all var(--transitionDuration) var(--easeOutBack);
+  z-index: 11;
+}
+
+.wheel {
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+  transition: all var(--transitionDuration) var(--easeOutBack);
+  width: 100%;
+}
+
+.wheel::before {
+  border-left: calc(var(--cell) * 0.125) solid Lavender;
+  border-right: calc(var(--cell) * 0.125) solid Lavender;
+  bottom: calc(var(--cell) * 0.5);
+  content: "";
+  left: calc(var(--cell) * 0.5);
+  position: absolute;
+  right: calc(var(--cell) * 0.5);
+  top: calc(var(--cell) * 1.5);
+  transition: all var(--transitionDuration) var(--easeOutBack);
+  z-index: -1;
+}
+
+.wheel::after {
+  background: RebeccaPurple;
+  border-radius: 50%;
+  bottom: 0;
+  box-shadow: 0 0 0 calc(var(--cell) * 0.0625) RebeccaPurple,
+    inset 0 0 0 calc(var(--cell) * 0.25) Indigo;
+  content: "";
+  display: flex;
+  height: 0;
+  padding-top: calc(100% / 3);
+  position: absolute;
+  width: calc(100% / 3);
+}
+
+.front.wheel::after {
+  left: initial !important;
+  right: 0;
+}
+
+#grid {
+  display: flex;
+  flex-wrap: wrap;
+  left: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 999;
+
+  .cell {
+    aspect-ratio: 1;
+    outline: 1px dashed turquoise;
+    width: calc(100% / 12);
+  }
+}
+
+#controls {
+  aspect-ratio: 2/1;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 576px;
+
+  button {
+    background: rgba(64, 224, 208, 0.1);
+    color: Turquoise;
+    cursor: pointer;
+    height: 50%;
+    opacity: 0;
+    outline: none;
+    width: 100%;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.obstacle {
+  position: absolute;
+}
+
+.obstacle::before {
+  background: Plum;
+  border-radius: calc(var(--cell) * 0.25);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* .car::before {
+  border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
+    calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
+  bottom: calc(var(--cell) * 0.5);
+} */
