@@ -92,14 +92,19 @@ class Game {
     }
 
     const gap = (1 / this.cols) * this.obstacles.gap;
-    const lastObstacle = this.obstacles.list.at(-1);
-    const rightEdge = lastObstacle.x + lastObstacle.width + gap;
+    const last = this.obstacles.list.at(-1);
+    const rightEdge = last.x + last.width + gap;
 
     if (rightEdge > this.bounds.right) {
       return false;
     }
 
     return true;
+  }
+
+  haveCommonElements(arr1, arr2) {
+    const set1 = new Set(arr1);
+    return arr2.some((element) => set1.has(element));
   }
 
   setup() {
@@ -120,7 +125,25 @@ class Game {
     }
 
     if (this.allowsNewObstacle) {
-      const obstacle = new Obstacle(this);
+      let obstacle = new Obstacle(this);
+
+      // If current gap is smaller than taxi and an obstacle already exists
+      if (this.obstacles.gap < this.taxi.w && this.obstacles.list.length > 0) {
+        const last = this.obstacles.list.at(-1);
+        const lastPositions = last.kind.allowedPositions;
+
+        // Make sure new obstacle allows taxi to pass
+        while (
+          !this.haveCommonElements(
+            lastPositions,
+            obstacle.kind.allowedPositions
+          )
+        ) {
+          console.log("generating new obstacle");
+          obstacle = new Obstacle(this);
+          obstacle.element.style.backgroundColor = "DeepPink";
+        }
+      }
 
       this.obstacles.add(obstacle);
     }
@@ -185,8 +208,10 @@ class Taxi {
     this.position = 0;
     this.min = 0;
     this.max = 2;
-    this.height = (1 / this.game.rows) * 2;
-    this.width = (1 / this.game.cols) * 3;
+    this.w = 3;
+    this.h = 2;
+    this.width = (1 / this.game.cols) * this.w;
+    this.height = (1 / this.game.rows) * this.h;
     this.x = (1 / this.game.cols) * 1;
     this.speedX = 0.01;
 
@@ -274,8 +299,6 @@ class Obstacle {
     this.tolerance.front = (1 / this.game.cols) * -0.25;
     this.tolerance.back = (1 / this.game.cols) * -0.5;
 
-    console.log(this.tolerance);
-
     this.height = (1 / this.game.rows) * this.kind.h;
     this.width = (1 / this.game.cols) * this.kind.w;
     this.x = this.game.bounds.right;
@@ -313,6 +336,15 @@ class Obstacle {
     return true;
   }
 
+  destroy() {
+    this.element.remove();
+
+    const index = this.game.obstacles.list.indexOf(this);
+    if (index > -1) {
+      this.game.obstacles.list.splice(index, 1);
+    }
+  }
+
   setup() {
     this.element.classList.add(this.className, this.name);
     this.element.style.width = `${this.width * 100}%`;
@@ -329,7 +361,7 @@ class Obstacle {
     this.element.style.left = `${this.x * 100}%`;
 
     if (this.x < this.game.bounds.left) {
-      console.log("This obstacle should be deleted");
+      this.destroy();
     }
 
     if (this.hasCollided) {
