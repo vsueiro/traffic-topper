@@ -269,7 +269,7 @@ class Taxi {
     this.w = 3;
     this.h = 2;
     this.width = (1 / this.game.cols) * this.w;
-    this.height = (1 / this.game.rows) * this.h;
+    this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
     this.speedX = 0.01;
     this.pokeTimeout;
@@ -278,9 +278,9 @@ class Taxi {
   }
 
   get y() {
-    if (this.position === 0) return this.height * 2;
-    if (this.position === 1) return this.height * 1;
-    if (this.position === 2) return this.height * 0;
+    if (this.position === 0) return (1 / this.game.rows) * this.h * 2;
+    if (this.position === 1) return (1 / this.game.rows) * this.h * 1;
+    if (this.position === 2) return (1 / this.game.rows) * this.h * 0;
   }
 
   setup() {

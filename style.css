@@ -51,6 +51,7 @@ body {
 
 .taxi {
   animation: bump 2s infinite;
+  background: Tomato;
   border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
     calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
   overflow: hidden;
@@ -60,20 +61,27 @@ body {
 }
 
 .taxi::before {
-  background: Tomato;
-  border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
-    calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
-  bottom: calc(var(--cell) * 0.5);
+  background: Transparent;
+  border-radius: 50%;
+  bottom: calc(var(--cell) * -0.5);
+  box-shadow: ;
+  box-shadow: 0 0 0 calc(var(--cell) * 0.0625) rgba(102, 51, 153, 0.25),
+    inset 0 0 0 calc(var(--cell) * 1) rgba(102, 51, 153, 0.25),
+    calc(var(--cell) * 2) 0 0 calc(var(--cell) * 0.0625)
+      rgba(102, 51, 153, 0.25)
+      /*,
+    inset calc(var(--cell) * 2) 0 0 calc(var(--cell) * 1)
+      rgba(102, 51, 153, 0.25)*/;
   content: "";
+  height: calc(var(--cell) * 1);
   left: 0;
   position: absolute;
-  right: 0;
-  top: 0;
+  width: calc(var(--cell) * 1);
   z-index: 1;
 }
 
 .taxi::after {
-  background: indigo;
+  background: Indigo;
   border-radius: calc(var(--cell) * 0.125) 0 0 calc(var(--cell) * 0.5);
   content: "";
   display: block;
@@ -283,8 +291,8 @@ body {
 }
 
 .scoreboard {
-  border-radius: calc(var(--cell) * 0.25);
   border: calc(var(--cell) * 0.0625) solid Plum;
+  border-radius: calc(var(--cell) * 0.25);
   /* border-top: calc(var(--cell) * 0.0625) solid currentColor; */
   bottom: calc(var(--cell) * -1);
   color: Plum;
