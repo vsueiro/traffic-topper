@@ -79,11 +79,20 @@ class Game {
     this.bounds = {};
     this.bounds.right = 2;
     this.bounds.left = -2;
-    this.over = false;
+    this.isOver = false;
     this.obstacles = [];
     this.possibleObstacles = ["car", "bus"];
 
     this.setup();
+  }
+
+  get over() {
+    return this.isOver;
+  }
+
+  set over(value) {
+    this.isOver = value;
+    this.element.dataset.over = value;
   }
 
   get allowsNewObstacle() {
@@ -108,6 +117,7 @@ class Game {
   }
 
   setup() {
+    this.over = false;
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -212,6 +222,7 @@ class Taxi {
     this.height = (1 / this.game.rows) * this.h;
     this.x = (1 / this.game.cols) * 1;
     this.speedX = 0.01;
+    this.pokeTimeout;
 
     this.setup();
   }
@@ -230,6 +241,17 @@ class Taxi {
     this.element.style.left = `${this.x * 100}%`;
 
     this.game.element.append(this.element);
+  }
+
+  poke(direction) {
+    clearTimeout(this.pokeTimeout);
+    this.element.dataset.poke = "";
+
+    this.element.dataset.poke = direction;
+
+    this.pokeTimeout = setTimeout(() => {
+      this.element.dataset.poke = "";
+    }, 100);
   }
 
   hit(obstacle) {
@@ -255,8 +277,10 @@ class Taxi {
     this.position += step;
 
     if (this.position > this.max) {
+      this.poke("up");
       this.position = this.max;
     } else if (this.position < this.min) {
+      this.poke("down");
       this.position = this.min;
     }
 

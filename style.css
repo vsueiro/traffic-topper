@@ -42,6 +42,7 @@ body {
 }
 
 .taxi {
+  animation: bump 2s infinite;
   position: absolute;
   transition: all var(--transitionDuration) var(--easeOutBack);
   z-index: 10;
@@ -58,6 +59,62 @@ body {
   right: 0;
   top: 0;
   z-index: 1;
+}
+
+.taxi[data-poke="up"] {
+  animation: pokeUp 0.1s;
+}
+
+.taxi[data-poke="down"] {
+  animation: pokeDown 0.1s;
+}
+
+@keyframes bump {
+  0% {
+    translate: 0 0;
+  }
+  25% {
+    translate: 0 calc(var(--cell) * -0.03125);
+  }
+  75% {
+    translate: 0 calc(var(--cell) * 0.03125);
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes spin {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes pokeUp {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -5%;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes pokeDown {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 5%;
+  }
+  100% {
+    translate: 0 0;
+  }
 }
 
 .wheels {
@@ -91,17 +148,31 @@ body {
 }
 
 .wheel::after {
+  animation: spin 0.5s infinite linear;
   background: RebeccaPurple;
+  border: calc(var(--cell) * 0.25) solid Indigo;
+  border-bottom-color: hsl(275, 100%, 20%);
   border-radius: 50%;
+  border-top-color: hsl(275, 100%, 20%);
   bottom: 0;
   box-shadow: 0 0 0 calc(var(--cell) * 0.0625) RebeccaPurple,
-    inset 0 0 0 calc(var(--cell) * 0.25) Indigo;
+    inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
   content: "";
   display: flex;
-  height: 0;
-  padding-top: calc(100% / 3);
+  height: calc(var(--cell) * 1);
   position: absolute;
-  width: calc(100% / 3);
+  transition: border-color 0.2s;
+  width: calc(var(--cell) * 1);
+}
+
+#game[data-over="true"] {
+  .taxi {
+    animation-duration: 0s;
+  }
+  .wheel::after {
+    animation-duration: 0s;
+    border-color: hsl(275, 100%, 22.5%);
+  }
 }
 
 .front.wheel::after {
@@ -119,6 +190,7 @@ body {
   right: 0;
   top: 0;
   z-index: 999;
+  /* display: none; */
 
   .cell {
     aspect-ratio: 1;
