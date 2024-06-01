@@ -43,6 +43,9 @@ body {
 
 .taxi {
   animation: bump 2s infinite;
+  border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
+    calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
+  overflow: hidden;
   position: absolute;
   transition: all var(--transitionDuration) var(--easeOutBack);
   z-index: 10;
@@ -58,6 +61,19 @@ body {
   position: absolute;
   right: 0;
   top: 0;
+  z-index: 1;
+}
+
+.taxi::after {
+  background: indigo;
+  border-radius: calc(var(--cell) * 0.125) 0 0 calc(var(--cell) * 0.5);
+  content: "";
+  display: block;
+  height: calc(var(--cell) * 0.333);
+  position: absolute;
+  right: 0;
+  top: calc(var(--cell) * 0.333);
+  width: calc(var(--cell) * 1);
   z-index: 1;
 }
 
@@ -190,7 +206,7 @@ body {
   right: 0;
   top: 0;
   z-index: 999;
-  /* display: none; */
+  display: none;
 
   .cell {
     aspect-ratio: 1;

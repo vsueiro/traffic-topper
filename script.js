@@ -138,7 +138,10 @@ class Game {
       let obstacle = new Obstacle(this);
 
       // If current gap is smaller than taxi and an obstacle already exists
-      if (this.obstacles.gap < this.taxi.w && this.obstacles.list.length > 0) {
+      const fitsTaxi = this.obstacles.gap < this.taxi.w + 1;
+      const obstacleExists = this.obstacles.list.length > 0;
+
+      if (fitsTaxi && obstacleExists) {
         const last = this.obstacles.list.at(-1);
         const lastPositions = last.kind.allowedPositions;
 
