@@ -120,7 +120,7 @@ class Game {
 
   update(game) {
     if (game.over) {
-      window.alert("Game Over");
+      // window.alert("Game Over");
       return;
     }
 
@@ -139,9 +139,7 @@ class Game {
             obstacle.kind.allowedPositions
           )
         ) {
-          console.log("generating new obstacle");
           obstacle = new Obstacle(this);
-          obstacle.element.style.backgroundColor = "DeepPink";
         }
       }
 
@@ -234,7 +232,26 @@ class Taxi {
     this.game.element.append(this.element);
   }
 
+  hit(obstacle) {
+    this.impact = document.createElement("div");
+    this.impact.classList.add("impact");
+    this.impact.style.width = `${this.width * 1.5 * 100}%`;
+    // this.element.style.height = `${this.height * 100}%`;
+    this.impact.style.top = `${(this.y + this.height / 2) * 100}%`;
+    this.impact.style.left = `${(this.x + this.width / 2) * 100}%`;
+
+    this.game.element.append(this.impact);
+
+    setTimeout(() => {
+      this.impact.style.scale = 1;
+    }, 100);
+  }
+
   move(step) {
+    if (this.game.over) {
+      return;
+    }
+
     this.position += step;
 
     if (this.position > this.max) {
@@ -365,7 +382,7 @@ class Obstacle {
     }
 
     if (this.hasCollided) {
-      console.log("Collided");
+      this.game.taxi.hit(this);
       this.game.over = true;
     }
   }

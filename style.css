@@ -169,3 +169,16 @@ body {
     calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
   bottom: calc(var(--cell) * 0.5);
 } */
+
+.impact {
+  aspect-ratio: 1;
+  /* background: DeepPink; */
+  border: calc(var(--cell) * 0.25) solid DeepPink;
+  border-radius: 50%;
+  /* opacity: 0.75; */
+  position: absolute;
+  scale: 0.0625;
+  transition: scale 0.1s var(--easeOutBack);
+  translate: -50% -50%;
+  z-index: 11;
+}
