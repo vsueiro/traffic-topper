@@ -31,6 +31,14 @@ body {
   overflow: hidden;
 }
 
+body {
+  color: Lavender;
+  font-family: "Courier New", Courier, monospace;
+  font-size: calc(var(--cell) * 0.5);
+  font-weight: bolder;
+  line-height: calc(var(--cell) * 1);
+}
+
 #game {
   aspect-ratio: 2/1;
   /* background: rebeccapurple; */
@@ -189,6 +197,9 @@ body {
     animation-duration: 0s;
     border-color: hsl(275, 100%, 22.5%);
   }
+  .scoreboard::before {
+    animation-duration: 0s;
+  }
 }
 
 .front.wheel::after {
@@ -198,6 +209,7 @@ body {
 
 #grid {
   display: flex;
+  display: none;
   flex-wrap: wrap;
   left: 0;
   opacity: 0.5;
@@ -206,11 +218,10 @@ body {
   right: 0;
   top: 0;
   z-index: 999;
-  display: none;
 
   .cell {
     aspect-ratio: 1;
-    outline: 1px dashed turquoise;
+    outline: 1px dashed Turquoise;
     width: calc(100% / 12);
   }
 }
@@ -270,3 +281,50 @@ body {
   translate: -50% -50%;
   z-index: 11;
 }
+
+.scoreboard {
+  border-radius: calc(var(--cell) * 0.25);
+  border: calc(var(--cell) * 0.0625) solid Plum;
+  /* border-top: calc(var(--cell) * 0.0625) solid currentColor; */
+  bottom: calc(var(--cell) * -1);
+  color: Plum;
+  display: flex;
+  justify-content: space-between;
+  left: 50%;
+  padding: 0 calc(var(--cell) * 0.25);
+  position: absolute;
+  translate: -50% 100%;
+  width: 100%;
+}
+
+/*
+.scoreboard::before {
+  animation: shift 0.2s infinite linear;
+  background-image: linear-gradient(
+    90deg,
+    Lavender 0%,
+    Lavender 25%,
+    Transparent 25%,
+    Transparent 100%
+  );
+  background-repeat: repeat-x;
+  background-size: calc(var(--cell) * 4) 100%;
+  content: "";
+  display: block;
+  height: calc(var(--cell) * 0.0625);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: calc(100% + calc(var(--cell) * 1));
+}
+
+@keyframes shift {
+  0% {
+    translate: 0;
+  }
+  100% {
+    translate: calc(var(--cell) * -4);
+  }
+}
+*/

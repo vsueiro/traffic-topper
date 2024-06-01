@@ -71,6 +71,45 @@ class Obstacles {
   }
 }
 
+class Scoreboard {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.scoreElement = document.createElement("div");
+    this.timeElement = document.createElement("div");
+    this.bounceCount = 0;
+
+    this.setup();
+  }
+
+  get bounce() {
+    return this.bounceCount;
+  }
+
+  set bounce(increment) {
+    this.bounceCount += increment;
+  }
+
+  toSeconds(ms) {
+    const seconds = ms / 1000; // Convert ms to seconds
+    return `${seconds.toFixed(1)}s`; // Format to 1 decimal place
+  }
+
+  setup() {
+    this.element.classList.add("scoreboard");
+    this.scoreElement.classList.add("score");
+    this.timeElement.classList.add("time");
+
+    this.element.append(this.scoreElement, this.timeElement);
+    this.game.element.append(this.element);
+  }
+
+  update() {
+    this.timeElement.textContent = this.toSeconds(this.game.elapsedTime);
+    this.scoreElement.textContent = `Bounced ${this.bounce}x`;
+  }
+}
+
 class Game {
   constructor() {
     this.element = document.getElementById("game");
@@ -82,6 +121,8 @@ class Game {
     this.isOver = false;
     this.obstacles = [];
     this.possibleObstacles = ["car", "bus"];
+    this.startTime;
+    this.elapsedTime = 0;
 
     this.setup();
   }
@@ -122,6 +163,8 @@ class Game {
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
     this.obstacles = new Obstacles(this);
+    this.scoreboard = new Scoreboard(this);
+    this.startTime = Date.now();
 
     requestAnimationFrame(() => {
       this.update(this);
@@ -162,6 +205,10 @@ class Game {
     for (let obstacle of this.obstacles.list) {
       obstacle.update();
     }
+
+    this.scoreboard.update();
+
+    this.elapsedTime = Date.now() - this.startTime;
 
     requestAnimationFrame(() => {
       this.update(game);
@@ -277,6 +324,8 @@ class Taxi {
       return;
     }
 
+    const oldPosition = this.position;
+
     this.position += step;
 
     if (this.position > this.max) {
@@ -285,6 +334,10 @@ class Taxi {
     } else if (this.position < this.min) {
       this.poke("down");
       this.position = this.min;
+    }
+
+    if (this.position !== oldPosition) {
+      this.game.scoreboard.bounce = +1;
     }
 
     this.update();
