@@ -119,7 +119,7 @@ class Game {
     this.bounds.right = 2;
     this.bounds.left = -2;
     this.isOver = false;
-    this.obstacles = [];
+    // this.obstacles = [];
     this.possibleObstacles = ["car", "bus"];
     this.startTime;
     this.elapsedTime = 0;
@@ -138,6 +138,7 @@ class Game {
 
   get allowsNewObstacle() {
     if (this.obstacles.list.length === 0) {
+      // console.log("allow");
       return true;
     }
 
@@ -146,8 +147,10 @@ class Game {
     const rightEdge = last.x + last.width + gap;
 
     if (rightEdge > this.bounds.right) {
+      // console.log("dont allow");
       return false;
     }
+    // console.log("allow");
 
     return true;
   }
@@ -176,6 +179,8 @@ class Game {
       // window.alert("Game Over");
       return;
     }
+
+    this.taxi.update();
 
     if (this.allowsNewObstacle) {
       let obstacle = new Obstacle(this);
@@ -271,7 +276,9 @@ class Taxi {
     this.width = (1 / this.game.cols) * this.w;
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
-    this.speedX = 0.01;
+    this.speedX = 2; // % of screen per second
+    this.offsetX = 0;
+    this.timeOfLastUpdate = 0;
     this.pokeTimeout;
 
     this.setup();
@@ -281,6 +288,19 @@ class Taxi {
     if (this.position === 0) return (1 / this.game.rows) * this.h * 2;
     if (this.position === 1) return (1 / this.game.rows) * this.h * 1;
     if (this.position === 2) return (1 / this.game.rows) * this.h * 0;
+  }
+
+  getOffsetX() {
+    const deltaTime = this.game.elapsedTime - this.timeOfLastUpdate;
+    const offsetPerMs = this.speedX / 1000;
+
+    const offset = deltaTime * offsetPerMs;
+
+    console.log(deltaTime, offsetPerMs, offset);
+
+    this.timeOfLastUpdate = this.game.elapsedTime;
+
+    return offset * -1;
   }
 
   setup() {
@@ -345,6 +365,8 @@ class Taxi {
 
   update() {
     this.element.style.top = `${this.y * 100}%`;
+
+    this.offsetX = this.getOffsetX();
 
     this.game.taxiWheels.update();
   }
@@ -453,7 +475,13 @@ class Obstacle {
   }
 
   update() {
-    this.x += this.game.taxi.speedX * -1;
+    this.x += this.game.taxi.offsetX;
+
+    if (this.x === this.game.bounds.right) {
+      this.element.style.outline = "4px solid red";
+    } else {
+      this.element.style.outline = "none";
+    }
 
     this.element.style.left = `${this.x * 100}%`;
 
