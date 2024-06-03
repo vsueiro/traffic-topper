@@ -60,25 +60,22 @@ body {
   z-index: 10;
 }
 
-.taxi::before {
+/* .taxi::before {
   background: Transparent;
   border-radius: 50%;
   bottom: calc(var(--cell) * -0.5);
   box-shadow: ;
-  box-shadow: 0 0 0 calc(var(--cell) * 0.0625) rgba(102, 51, 153, 0.25),
-    inset 0 0 0 calc(var(--cell) * 1) rgba(102, 51, 153, 0.25),
+  box-shadow: 0 0 0 calc(var(--cell) * 0.0625) rgba(102, 51, 153, 0.125),
+    inset 0 0 0 calc(var(--cell) * 1) rgba(102, 51, 153, 0.125),
     calc(var(--cell) * 2) 0 0 calc(var(--cell) * 0.0625)
-      rgba(102, 51, 153, 0.25)
-      /*,
-    inset calc(var(--cell) * 2) 0 0 calc(var(--cell) * 1)
-      rgba(102, 51, 153, 0.25)*/;
+      rgba(102, 51, 153, 0.125);
   content: "";
   height: calc(var(--cell) * 1);
   left: 0;
   position: absolute;
   width: calc(var(--cell) * 1);
   z-index: 1;
-}
+} */
 
 .taxi::after {
   background: Indigo;
