@@ -195,6 +195,8 @@ body {
 }
 
 #game[data-over="true"] {
+  animation: shake var(--transitionDuration) var(--easeOutBack);
+
   .taxi {
     animation-duration: 0s;
   }
@@ -204,6 +206,18 @@ body {
   }
   .scoreboard::before {
     animation-duration: 0s;
+  }
+}
+
+@keyframes shake {
+  0% {
+    translate: -1.25%;
+  }
+  50% {
+    translate: 1.25%;
+  }
+  100% {
+    translate: 0%;
   }
 }
 
