@@ -116,8 +116,8 @@ class Game {
     this.cols = 12;
     this.rows = 6;
     this.bounds = {};
-    this.bounds.right = 2;
-    this.bounds.left = -2;
+    this.bounds.right = 2.5;
+    this.bounds.left = -2.5;
     this.isOver = false;
     // this.obstacles = [];
     this.possibleObstacles = ["car", "bus"];
@@ -276,7 +276,11 @@ class Taxi {
     this.width = (1 / this.game.cols) * this.w;
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
-    this.speedX = 2; // % of screen per second
+    this.speed = {}; // % of screen per second
+    this.speed.min = 0.25;
+    this.speed.max = 2.5;
+    this.speed.x = this.speed.min;
+    this.speed.increaseX = 0.1; // % of screen per second
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
@@ -292,15 +296,27 @@ class Taxi {
 
   getOffsetX() {
     const deltaTime = this.game.elapsedTime - this.timeOfLastUpdate;
-    const offsetPerMs = this.speedX / 1000;
-
+    const offsetPerMs = this.speed.x / 1000;
     const offset = deltaTime * offsetPerMs;
-
-    console.log(deltaTime, offsetPerMs, offset);
-
     this.timeOfLastUpdate = this.game.elapsedTime;
 
     return offset * -1;
+  }
+
+  accelerate() {
+    const deltaTime = this.game.elapsedTime - this.timeOfLastUpdate;
+
+    const increasePerMs = this.speed.increaseX / 1000;
+    const increase = deltaTime * increasePerMs;
+    const newSpeed = this.speed.x + increase;
+
+    if (newSpeed < this.speed.max) {
+      this.speed.x = newSpeed;
+    } else {
+      this.speed.x = this.speed.max;
+    }
+
+    console.log(this.speed.x);
   }
 
   setup() {
@@ -344,6 +360,8 @@ class Taxi {
       return;
     }
 
+    this.game.controls.pressButton(step > 0 ? "up" : "down");
+
     const oldPosition = this.position;
 
     this.position += step;
@@ -366,6 +384,8 @@ class Taxi {
   update() {
     this.element.style.top = `${this.y * 100}%`;
 
+    this.accelerate();
+
     this.offsetX = this.getOffsetX();
 
     this.game.taxiWheels.update();
@@ -375,6 +395,11 @@ class Taxi {
 class Controls {
   constructor(game) {
     this.game = game;
+    this.element = document.createElement("div");
+    this.buttonUp = document.createElement("button");
+    this.buttonDown = document.createElement("button");
+
+    this.visualizer = document.c;
 
     this.setup();
   }
@@ -399,9 +424,47 @@ class Controls {
     });
   }
 
+  addButtons() {
+    this.element.classList.add("controls");
+    this.element.setAttribute("aria-hidden", "true");
+
+    this.buttonUp.classList.add("up");
+    this.buttonUp.addEventListener("click", () => {
+      this.game.taxi.move(+1);
+    });
+
+    this.buttonDown.classList.add("down");
+    this.buttonDown.addEventListener("click", () => {
+      this.game.taxi.move(-1);
+    });
+
+    this.element.append(this.buttonUp, this.buttonDown);
+
+    this.game.element.append(this.element);
+  }
+
+  pressButton(direction) {
+    const button =
+      direction === "up"
+        ? this.buttonUp
+        : direction === "down"
+        ? this.buttonDown
+        : undefined;
+
+    if (!button) {
+      return;
+    }
+
+    button.dataset.pressed = true;
+    setTimeout(() => {
+      button.dataset.pressed = false;
+    }, 50);
+  }
+
   setup() {
     this.addArrowKeys();
     this.addWASD();
+    this.addButtons();
   }
 }
 

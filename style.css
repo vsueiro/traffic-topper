@@ -22,6 +22,9 @@ button {
   appearance: none;
   background: transparent;
   border: 0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  font-weight: bolder;
 }
 
 html,
@@ -226,7 +229,7 @@ body {
   right: 0;
 }
 
-#grid {
+.grid {
   display: flex;
   display: none;
   flex-wrap: wrap;
@@ -245,24 +248,87 @@ body {
   }
 }
 
-#controls {
+.controls {
   aspect-ratio: 2/1;
+  bottom: calc(var(--cell) * -3);
   display: flex;
   flex-direction: column;
+  left: calc(var(--cell) * 1.5);
   margin: 0 auto;
   max-width: 576px;
+  position: absolute;
 
   button {
-    background: rgba(64, 224, 208, 0.1);
-    color: Turquoise;
+    align-items: center;
+    background: RebeccaPurple;
+    border-radius: calc(var(--cell) * 0.25);
+    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
+      0 calc(var(--cell) * 0.25) 0 0 Tomato;
+    color: Lavender;
     cursor: pointer;
+    display: flex;
     height: 50%;
-    opacity: 0;
+    height: calc(var(--cell) * 1);
+    justify-content: center;
+    /* opacity: 0; */
     outline: none;
-    width: 100%;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.05s;
+    width: calc(var(--cell) * 2);
 
-    &:hover {
-      opacity: 1;
+    &::before {
+      background: Tomato;
+      bottom: 0;
+      content: "";
+      display: block;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    &:hover::before {
+      opacity: 0.25;
+    }
+
+    &:active::before {
+      opacity: 0.5;
+    }
+
+    &::after {
+      content: "▶";
+      display: block;
+      font-size: calc(var(--cell) * 0.5);
+      height: var(--cell);
+      line-height: var(--cell);
+      width: var(--cell);
+    }
+
+    &.up {
+      z-index: 1;
+    }
+    &.down {
+      z-index: 1;
+    }
+
+    &.up::after {
+      rotate: -90deg;
+    }
+
+    &.down::after {
+      rotate: 90deg;
+    }
+
+    &[data-pressed="true"] {
+      box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
+        0 calc(var(--cell) * 0.125) 0 0 Tomato;
+      translate: 0 calc(var(--cell) * 0.125);
+
+      &::before {
+        opacity: 0.25;
+      }
     }
   }
 }
@@ -305,15 +371,15 @@ body {
   border: calc(var(--cell) * 0.0625) solid Plum;
   border-radius: calc(var(--cell) * 0.25);
   /* border-top: calc(var(--cell) * 0.0625) solid currentColor; */
-  bottom: calc(var(--cell) * -1);
+  bottom: calc(var(--cell) * -3);
   color: Plum;
   display: flex;
+  height: calc(var(--cell) * 2);
   justify-content: space-between;
-  left: 50%;
   padding: 0 calc(var(--cell) * 0.25);
   position: absolute;
-  translate: -50% 100%;
-  width: 100%;
+  right: 0;
+  width: calc(var(--cell) * 7);
 }
 
 /*
