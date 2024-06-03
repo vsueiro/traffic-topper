@@ -124,7 +124,6 @@ class Game {
     this.bounds.right = 2.5;
     this.bounds.left = -2.5;
     this.isOver = false;
-    // this.obstacles = [];
     this.possibleObstacles = ["car", "bus"];
     this.startTime;
     this.elapsedTime = 0;
@@ -143,7 +142,6 @@ class Game {
 
   get allowsNewObstacle() {
     if (this.obstacles.list.length === 0) {
-      // console.log("allow");
       return true;
     }
 
@@ -152,10 +150,8 @@ class Game {
     const rightEdge = last.x + last.width + gap;
 
     if (rightEdge > this.bounds.right) {
-      // console.log("dont allow");
       return false;
     }
-    // console.log("allow");
 
     return true;
   }
@@ -172,6 +168,7 @@ class Game {
     this.controls = new Controls(this);
     this.obstacles = new Obstacles(this);
     this.scoreboard = new Scoreboard(this);
+    this.speedometer = new Speedometer(this);
     this.startTime = Date.now();
 
     requestAnimationFrame(() => {
@@ -186,6 +183,7 @@ class Game {
     }
 
     this.taxi.update();
+    this.speedometer.update();
 
     if (this.allowsNewObstacle) {
       let obstacle = new Obstacle(this);
@@ -266,6 +264,44 @@ class TaxiWheels {
     // this.element.style.height = `${
     //   this.height * this.game.taxi.position + this.height * 100
     // }%`;
+  }
+}
+
+class Speedometer {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.indicator = document.createElement("div");
+    this.min = -135;
+    this.max = 135;
+
+    this.setup();
+  }
+
+  convertRange(value, fromMin, fromMax, toMin, toMax) {
+    fromMin = fromMin || this.game.taxi.speed.min;
+    fromMax = fromMax || this.game.taxi.speed.max;
+    toMin = toMin || this.min;
+    toMax = toMax || this.max;
+
+    return toMin + ((value - fromMin) * (toMax - toMin)) / (fromMax - fromMin);
+  }
+
+  updateRotation() {}
+
+  setup() {
+    this.element.classList.add("speedometer");
+    this.indicator.classList.add("indicator");
+
+    this.element.append(this.indicator);
+    this.game.element.append(this.element);
+  }
+
+  update() {
+    const root = document.documentElement;
+    const degrees = this.convertRange(this.game.taxi.speed.x);
+
+    root.style.setProperty("--speedometer-rotation", `${degrees}deg`);
   }
 }
 
