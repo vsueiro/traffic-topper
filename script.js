@@ -5,6 +5,7 @@ class Obstacles {
   constructor(game) {
     this.game = game;
     this.list = [];
+    this.isFirst = true;
     this.gap = 1;
     this.gapMin = 1;
     this.gapMax = 12;
@@ -46,6 +47,10 @@ class Obstacles {
   }
 
   get randomObstacle() {
+    if (this.list.length < 2) {
+      return "car";
+    }
+
     const list = [];
 
     for (let key in this.kinds) {
@@ -315,8 +320,6 @@ class Taxi {
     } else {
       this.speed.x = this.speed.max;
     }
-
-    console.log(this.speed.x);
   }
 
   setup() {
