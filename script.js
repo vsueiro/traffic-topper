@@ -116,12 +116,33 @@ class Scoreboard {
   }
 
   update() {
-    this.game.countdown = this.game.timeLimit - this.game.elapsedTime;
     this.timeElement.textContent = this.toSeconds(this.game.countdown);
 
     const percentage = (this.game.countdown / this.game.timeLimit) * 100;
     this.progressIndicator.style.width = `${percentage}%`;
     // this.scoreElement.textContent = `Bounced ${this.bounce}x`;
+  }
+}
+
+class Grid {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.cells = 72;
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add("grid");
+
+    for (let i = 0; i < this.cells; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      this.element.append(cell);
+    }
+
+    this.game.element.append(this.element);
   }
 }
 
@@ -134,7 +155,7 @@ class Game {
     this.bounds.right = 2.5;
     this.bounds.left = -2.5;
     this.isOver = false;
-    this.possibleObstacles = ["car", "bus"];
+    this.isWon = false;
     this.startTime;
     this.elapsedTime = 0;
     this.timeLimit = 30 * 1000;
@@ -150,6 +171,15 @@ class Game {
   set over(value) {
     this.isOver = value;
     this.element.dataset.over = value;
+  }
+
+  get won() {
+    return this.isWon;
+  }
+
+  set won(value) {
+    this.isWon = value;
+    this.element.dataset.won = value;
   }
 
   get allowsNewObstacle() {
@@ -168,6 +198,11 @@ class Game {
     return true;
   }
 
+  restart() {
+    this.element.replaceChildren();
+    window.game = new Game();
+  }
+
   haveCommonElements(arr1, arr2) {
     const set1 = new Set(arr1);
     return arr2.some((element) => set1.has(element));
@@ -175,6 +210,8 @@ class Game {
 
   setup() {
     this.over = false;
+    this.won = false;
+    this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -191,7 +228,21 @@ class Game {
   update(game) {
     if (game.over) {
       // window.alert("Game Over");
+
+      setTimeout(() => {
+        this.element.dataset.restarting = true;
+        this.restart();
+      }, 3000);
+
       return;
+    }
+
+    this.countdown = this.timeLimit - this.elapsedTime;
+
+    if (this.countdown <= 0) {
+      this.countdown = 0;
+      this.over = true;
+      this.won = true;
     }
 
     this.taxi.update();
@@ -321,9 +372,10 @@ class Taxi {
   constructor(game) {
     this.game = game;
     this.element = document.createElement("div");
-    this.position = 0;
     this.min = 0;
     this.max = 2;
+    this.position = this.min;
+    this.oldPosition = this.position;
     this.w = 3;
     this.h = 2;
     this.width = (1 / this.game.cols) * this.w;
@@ -413,7 +465,7 @@ class Taxi {
 
     this.game.controls.pressButton(step > 0 ? "up" : "down");
 
-    const oldPosition = this.position;
+    this.oldPosition = this.position;
 
     this.position += step;
 
@@ -425,7 +477,7 @@ class Taxi {
       this.position = this.min;
     }
 
-    if (this.position !== oldPosition) {
+    if (this.position !== this.oldPosition) {
       this.game.scoreboard.bounce = +1;
     }
 
@@ -610,4 +662,4 @@ class Obstacle {
   }
 }
 
-const game = new Game();
+window.game = new Game();
