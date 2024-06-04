@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@600&display=swap");
+
 :root {
   --cell: calc(100vw / 12);
   --easeOutBack: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transitionDuration: 0.2s;
   --wheel-spin-duration: 0.5s;
   --speedometer-rotation: -90deg;
+  --font-family: "Work Sans", sans-serif;
 }
 
 @media (min-width: 576px) {
@@ -25,9 +28,7 @@ button {
   appearance: none;
   background: transparent;
   border: 0;
-  font-family: "Courier New", Courier, monospace;
-  font-size: inherit;
-  font-weight: bolder;
+  font-family: var(--font-family);
 }
 
 html,
@@ -39,9 +40,9 @@ body {
 
 body {
   color: Lavender;
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-family);
   font-size: calc(var(--cell) * 0.5);
-  font-weight: bolder;
+  font-weight: 600;
   line-height: calc(var(--cell) * 1);
 }
 
@@ -303,7 +304,7 @@ body {
     &::after {
       content: "▶";
       display: block;
-      font-size: calc(var(--cell) * 0.5);
+      font-size: calc(var(--cell) * 0.375);
       height: var(--cell);
       line-height: var(--cell);
       width: var(--cell);
@@ -371,18 +372,72 @@ body {
 }
 
 .scoreboard {
+  align-items: center;
+  background: rgba(64, 224, 208, 0.5);
   border: calc(var(--cell) * 0.0625) solid Plum;
   border-radius: calc(var(--cell) * 0.25);
-  /* border-top: calc(var(--cell) * 0.0625) solid currentColor; */
   bottom: calc(var(--cell) * -3);
+  box-shadow: 0 calc(var(--cell) * 0.25) 0 0 Plum,
+    inset 0 0 0 calc(var(--cell) * 0.0625) Indigo;
   color: Plum;
   display: flex;
+  font-variant-numeric: tabular-nums;
   height: calc(var(--cell) * 2);
-  justify-content: space-between;
-  padding: 0 calc(var(--cell) * 0.25);
+  justify-content: start;
+  overflow: hidden;
+  padding: calc(var(--cell) * 0.0625);
   position: absolute;
-  right: 0;
-  width: calc(var(--cell) * 5.5);
+  right: calc(var(--cell) * 1.5);
+  width: calc(var(--cell) * 4);
+
+  .progress {
+    border-radius: calc(var(--cell) * 0.125);
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    &::before {
+      background: Turquoise;
+      opacity: 0.25;
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .indicator {
+      background: Turquoise;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  .time {
+    align-items: center;
+    bottom: 0;
+    color: Indigo;
+    display: flex;
+    font-size: calc(var(--cell) * 0.75);
+    justify-content: center;
+    left: 0;
+    position: relative;
+    position: absolute;
+    right: 0;
+    top: 0;
+    /*text-shadow: Lavender 2px 0px 0px, Lavender 1.75517px 0.958851px 0px,
+      Lavender 1.0806px 1.68294px 0px, Lavender 0.141474px 1.99499px 0px,
+      Lavender -0.832294px 1.81859px 0px, Lavender -1.60229px 1.19694px 0px,
+      Lavender -1.97998px 0.28224px 0px, Lavender -1.87291px -0.701566px 0px,
+      Lavender -1.30729px -1.5136px 0px, Lavender -0.421592px -1.95506px 0px,
+      Lavender 0.567324px -1.91785px 0px, Lavender 1.41734px -1.41108px 0px,
+      Lavender 1.92034px -0.558831px 0px;*/
+  }
 }
 
 /*
@@ -453,13 +508,13 @@ body {
 
     &::before {
       background: DeepPink;
+      border-radius: calc(var(--cell) * 0.0625);
       content: "";
       height: 66.666%;
       left: 0;
       position: absolute;
       right: 0;
       top: 0;
-      border-radius: calc(var(--cell) * 0.0625);
     }
   }
 

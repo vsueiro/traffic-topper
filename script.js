@@ -80,7 +80,9 @@ class Scoreboard {
   constructor(game) {
     this.game = game;
     this.element = document.createElement("div");
-    this.scoreElement = document.createElement("div");
+    this.progress = document.createElement("div");
+    this.progressIndicator = document.createElement("div");
+    // this.scoreElement = document.createElement("div");
     this.timeElement = document.createElement("div");
     this.bounceCount = 0;
 
@@ -102,16 +104,24 @@ class Scoreboard {
 
   setup() {
     this.element.classList.add("scoreboard");
-    this.scoreElement.classList.add("score");
+    this.progress.classList.add("progress");
+    this.progressIndicator.classList.add("indicator");
+    // this.scoreElement.classList.add("score");
     this.timeElement.classList.add("time");
 
-    this.element.append(this.scoreElement, this.timeElement);
+    this.progress.append(this.progressIndicator);
+    this.element.append(this.progress);
+    this.element.append(this.timeElement);
     this.game.element.append(this.element);
   }
 
   update() {
-    this.timeElement.textContent = this.toSeconds(this.game.elapsedTime);
-    this.scoreElement.textContent = `Bounced ${this.bounce}x`;
+    this.game.countdown = this.game.timeLimit - this.game.elapsedTime;
+    this.timeElement.textContent = this.toSeconds(this.game.countdown);
+
+    const percentage = (this.game.countdown / this.game.timeLimit) * 100;
+    this.progressIndicator.style.width = `${percentage}%`;
+    // this.scoreElement.textContent = `Bounced ${this.bounce}x`;
   }
 }
 
@@ -127,6 +137,8 @@ class Game {
     this.possibleObstacles = ["car", "bus"];
     this.startTime;
     this.elapsedTime = 0;
+    this.timeLimit = 30 * 1000;
+    this.countdown = this.timeLimit;
 
     this.setup();
   }
@@ -318,8 +330,8 @@ class Taxi {
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
-    this.speed.min = 0.25;
-    this.speed.max = 2.5;
+    this.speed.min = 1;
+    this.speed.max = 3;
     this.speed.x = this.speed.min;
     this.speed.increaseX = 0.1; // % of screen per second
     this.offsetX = 0;
