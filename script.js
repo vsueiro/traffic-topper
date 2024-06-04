@@ -389,6 +389,7 @@ class Taxi {
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
+    this.autopilot = true;
 
     this.setup();
   }
@@ -397,6 +398,59 @@ class Taxi {
     if (this.position === 0) return (1 / this.game.rows) * this.h * 2;
     if (this.position === 1) return (1 / this.game.rows) * this.h * 1;
     if (this.position === 2) return (1 / this.game.rows) * this.h * 0;
+  }
+
+  get closestObstacle() {
+    let closest;
+
+    const obstacles = this.game.obstacles.list;
+
+    for (let i = 0; i < obstacles.length; i++) {
+      const obstacle = obstacles[i];
+      const previous = obstacles[i - 1] || undefined;
+      const next = obstacles[i + 1] || undefined;
+
+      const obstacleIsInFront = obstacle.x > this.x + this.width;
+
+      if (obstacleIsInFront) {
+        if (next) {
+          const distance = next.x - this.x + this.width;
+          const nextIsClose = distance > 0 && distance < this.width;
+
+          if (nextIsClose) {
+            closest = next;
+            break;
+          }
+        }
+
+        if (previous) {
+          const clearedPrevious = previous.x + previous.width < this.x;
+
+          if (clearedPrevious) {
+            closest = obstacle;
+            break;
+          }
+        } else {
+          closest = obstacle;
+          break;
+        }
+      }
+    }
+
+    return closest;
+  }
+
+  findClosest(number, numbers) {
+    return numbers.reduce((closest, num) => {
+      const diffCurrent = Math.abs(num - number);
+      const diffClosest = Math.abs(closest - number);
+
+      if (diffCurrent < diffClosest) {
+        return num;
+      } else {
+        return closest;
+      }
+    }, numbers[0]);
   }
 
   getOffsetX() {
@@ -485,6 +539,24 @@ class Taxi {
   }
 
   update() {
+    if (this.autopilot) {
+      if (this.closestObstacle) {
+        this.closestObstacle.element.style.outline = "10px solid DeepPink";
+
+        const { allowedPositions } = this.closestObstacle.kind;
+
+        if (allowedPositions.includes(this.position)) {
+          if (this.position === 0 && allowedPositions.includes(1)) {
+            this.move(+1);
+          }
+        } else {
+          const target = this.findClosest(this.position, allowedPositions);
+          const step = target > this.position ? +1 : -1;
+          this.move(step);
+        }
+      }
+    }
+
     this.element.style.top = `${this.y * 100}%`;
 
     this.accelerate();
@@ -679,11 +751,11 @@ class Obstacle {
   update() {
     this.x += this.game.taxi.offsetX;
 
-    if (this.x === this.game.bounds.right) {
-      this.element.style.outline = "4px solid red";
-    } else {
-      this.element.style.outline = "none";
-    }
+    // if (this.x === this.game.bounds.right) {
+    //   this.element.style.outline = "4px solid red";
+    // } else {
+    //   this.element.style.outline = "none";
+    // }
 
     this.element.style.left = `${this.x * 100}%`;
 
