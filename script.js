@@ -389,7 +389,7 @@ class Taxi {
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
-    this.autopilot = true;
+    this.autopilot = false;
 
     this.setup();
   }
@@ -401,6 +401,24 @@ class Taxi {
   }
 
   get closestObstacle() {
+    let closest;
+
+    const obstacles = this.game.obstacles.list;
+
+    for (let i = 0; i < obstacles.length; i++) {
+      const obstacle = obstacles[i];
+      const previous = obstacle[i - 1];
+      const distance = obstacle.x - (this.x + this.width);
+
+      if (distance > 0 && distance < this.width / 3) {
+        closest = obstacle;
+        break;
+      }
+    }
+
+    return closest;
+
+    /*
     let closest;
 
     const obstacles = this.game.obstacles.list;
@@ -438,6 +456,7 @@ class Taxi {
     }
 
     return closest;
+    */
   }
 
   findClosest(number, numbers) {
@@ -541,14 +560,14 @@ class Taxi {
   update() {
     if (this.autopilot) {
       if (this.closestObstacle) {
-        this.closestObstacle.element.style.outline = "10px solid DeepPink";
+        // this.closestObstacle.element.style.outline = "10px solid DeepPink";
 
         const { allowedPositions } = this.closestObstacle.kind;
 
         if (allowedPositions.includes(this.position)) {
-          if (this.position === 0 && allowedPositions.includes(1)) {
-            this.move(+1);
-          }
+          // if (this.position === 0 && allowedPositions.includes(1)) {
+          //   this.move(+1);
+          // }
         } else {
           const target = this.findClosest(this.position, allowedPositions);
           const step = target > this.position ? +1 : -1;
@@ -771,3 +790,10 @@ class Obstacle {
 }
 
 window.game = new Game();
+
+// Toggle autopilot
+document.addEventListener("keydown", (event) => {
+  if (event.key === "x" || event.key === "X") {
+    window.game.taxi.autopilot = !window.game.taxi.autopilot;
+  }
+});
