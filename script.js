@@ -501,6 +501,8 @@ class Controls {
     this.element = document.createElement("div");
     this.buttonUp = document.createElement("button");
     this.buttonDown = document.createElement("button");
+    this.touch = {};
+    this.touch.tolerance = 24;
 
     this.visualizer = document.c;
 
@@ -546,6 +548,39 @@ class Controls {
     this.game.element.append(this.element);
   }
 
+  handleTouchStart(event) {
+    const firstTouch = event.touches[0];
+    this.touch.startY = firstTouch.clientY;
+  }
+
+  handleTouchEnd(event) {
+    this.touch.endY = event.changedTouches[0].clientY;
+
+    if (this.touch.startY > this.touch.endY + this.touch.tolerance) {
+      this.game.taxi.move(+1);
+    } else if (this.touch.startY < this.touch.endY - this.touch.tolerance) {
+      this.game.taxi.move(-1);
+    }
+  }
+
+  addSwiping() {
+    document.addEventListener(
+      "touchstart",
+      () => {
+        this.handleTouchStart();
+      },
+      false
+    );
+
+    document.addEventListener(
+      "touchend",
+      () => {
+        this.handleTouchEnd();
+      },
+      false
+    );
+  }
+
   pressButton(direction) {
     const button =
       direction === "up"
@@ -568,6 +603,7 @@ class Controls {
     this.addArrowKeys();
     this.addWASD();
     this.addButtons();
+    this.addSwiping();
   }
 }
 
