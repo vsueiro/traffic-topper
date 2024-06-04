@@ -564,18 +564,18 @@ class Controls {
   }
 
   addSwiping() {
-    document.addEventListener(
+    document.body.addEventListener(
       "touchstart",
-      () => {
-        this.handleTouchStart();
+      (event) => {
+        this.handleTouchStart(event);
       },
       false
     );
 
-    document.addEventListener(
+    document.body.addEventListener(
       "touchend",
-      () => {
-        this.handleTouchEnd();
+      (event) => {
+        this.handleTouchEnd(event);
       },
       false
     );
