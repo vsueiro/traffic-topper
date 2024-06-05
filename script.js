@@ -438,7 +438,7 @@ class Trees {
     this.element = document.createElement("div");
     this.list = [];
     this.chance = 0.025;
-    this.initialTrees = 12;
+    this.initialTrees = 16;
     this.isFirst = true;
 
     this.setup();
