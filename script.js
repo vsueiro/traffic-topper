@@ -212,7 +212,7 @@ class Game {
   setup() {
     this.over = false;
     this.won = false;
-    this.grid = new Grid(this);
+    // this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -394,10 +394,11 @@ class Template {
 class Trees {
   constructor(game) {
     this.game = game;
-    // this.element = document.createElement("div");
+    this.element = document.createElement("div");
     this.list = [];
     this.chance = 0.025;
     this.initialTrees = 12;
+    this.isFirst = true;
 
     this.setup();
   }
@@ -407,24 +408,27 @@ class Trees {
   }
 
   setup() {
-    for (let i = 0; i < this.initialTrees; i++) {
-      const x = this.convertRange(
-        Math.random(),
-        0,
-        1,
-        -this.game.bounds.right,
-        this.game.bounds.right
-      );
-
-      const tree = new Tree(this.game, x);
-      this.list.push(tree);
-    }
-
-    // this.element.classList.add("trees");
-    // this.game.element.append(this.element);
+    this.element.classList.add("trees");
+    this.game.element.append(this.element);
   }
 
   update() {
+    if (this.isFirst) {
+      for (let i = 0; i < this.initialTrees; i++) {
+        const x = this.convertRange(
+          Math.random(),
+          0,
+          1,
+          -this.game.bounds.right,
+          this.game.bounds.right
+        );
+
+        const tree = new Tree(this.game, x);
+        this.list.push(tree);
+      }
+      this.isFirst = false;
+    }
+
     if (Math.random() < this.chance) {
       const tree = new Tree(this.game);
       this.list.push(tree);
@@ -472,12 +476,12 @@ class Tree {
     this.element.style.height = `${this.height * 100}%`;
     this.element.style.left = `0%`;
     this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+    this.element.style.zIndex = Math.round(this.proximity * 1000);
 
     this.leaves.style.aspectRatio = this.ratio;
-
     this.element.append(this.leaves, this.trunk);
 
-    this.game.element.append(this.element);
+    this.game.trees.element.append(this.element);
   }
 
   update() {
