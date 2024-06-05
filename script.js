@@ -216,6 +216,7 @@ class Game {
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
     this.obstacles = new Obstacles(this);
+    this.trees = new Trees(this);
     this.scoreboard = new Scoreboard(this);
     this.speedometer = new Speedometer(this);
     this.startTime = Date.now();
@@ -229,10 +230,10 @@ class Game {
     if (game.over) {
       // window.alert("Game Over");
 
-      setTimeout(() => {
-        this.element.dataset.restarting = true;
-        this.restart();
-      }, 3000);
+      // setTimeout(() => {
+      //   this.element.dataset.restarting = true;
+      //   this.restart();
+      // }, 3000);
 
       return;
     }
@@ -277,6 +278,7 @@ class Game {
       obstacle.update();
     }
 
+    this.trees.update();
     this.scoreboard.update();
 
     this.elapsedTime = Date.now() - this.startTime;
@@ -367,6 +369,115 @@ class Speedometer {
     root.style.setProperty("--speedometer-rotation", `${degrees}deg`);
   }
 }
+/*
+class Template {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement('div')
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add('template')
+
+    this.game.element.append(this.element)
+  }
+
+  update() {
+
+  }
+}
+*/
+
+class Trees {
+  constructor(game) {
+    this.game = game;
+    // this.element = document.createElement("div");
+    this.list = [];
+    this.chance = 0.025;
+
+    this.setup();
+  }
+
+  setup() {
+    // this.element.classList.add("trees");
+    // this.game.element.append(this.element);
+  }
+
+  update() {
+    if (Math.random() < this.chance) {
+      const tree = new Tree(this.game);
+      this.list.push(tree);
+    }
+
+    for (let tree of this.list) {
+      tree.update();
+    }
+  }
+}
+
+class Tree {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.leaves = document.createElement("div");
+    this.trunk = document.createElement("div");
+
+    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5];
+    this.widths = [1, 1.25, 1.5];
+    this.ratios = [1, , 0.875, 0.75, 0.625];
+    this.proximities = [0.725, 0.75, 0.775];
+
+    this.height = (1 / this.game.rows) * this.random(this.heights);
+    this.width = (1 / this.game.cols) * this.random(this.widths);
+    this.ratio = this.random(this.ratios);
+    this.proximity = this.random(this.proximities);
+
+    this.x = this.game.bounds.right;
+
+    this.setup();
+  }
+
+  random(list) {
+    const index = Math.floor(Math.random() * list.length);
+    return list[index];
+  }
+
+  setup() {
+    this.element.classList.add("tree");
+    this.leaves.classList.add("leaves");
+    this.trunk.classList.add("trunk");
+
+    this.element.style.width = `${this.width * 100}%`;
+    this.element.style.height = `${this.height * 100}%`;
+
+    this.leaves.style.aspectRatio = this.ratio;
+    // this.element.style.top = `${this.y * 100}%`;
+    // this.element.style.left = `${this.x * 100}%`;
+
+    this.element.append(this.leaves, this.trunk);
+
+    this.game.element.append(this.element);
+  }
+
+  update() {
+    this.x += this.game.taxi.offsetX * this.proximity;
+    this.element.style.left = `${this.x * 100}%`;
+
+    if (this.x < this.game.bounds.left) {
+      this.destroy();
+    }
+  }
+  destroy() {
+    this.element.remove();
+
+    const index = this.game.trees.list.indexOf(this);
+    if (index > -1) {
+      this.game.trees.list.splice(index, 1);
+    }
+  }
+}
 
 class Taxi {
   constructor(game) {
@@ -383,13 +494,13 @@ class Taxi {
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
     this.speed.min = 1;
-    this.speed.max = 3;
+    this.speed.max = 2.5;
     this.speed.x = this.speed.min;
     this.speed.increaseX = 0.1; // % of screen per second
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
-    this.autopilot = false;
+    this.autopilot = true;
 
     this.setup();
   }
