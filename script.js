@@ -106,8 +106,8 @@ class Scoreboard {
     this.element.classList.add("scoreboard");
     this.progress.classList.add("progress");
     this.progressIndicator.classList.add("indicator");
-    // this.scoreElement.classList.add("score");
     this.timeElement.classList.add("time");
+    // this.scoreElement.classList.add("score");
 
     this.progress.append(this.progressIndicator);
     this.element.append(this.progress);
@@ -119,7 +119,8 @@ class Scoreboard {
     this.timeElement.textContent = this.toSeconds(this.game.countdown);
 
     const percentage = (this.game.countdown / this.game.timeLimit) * 100;
-    this.progressIndicator.style.width = `${percentage}%`;
+    this.progressIndicator.style.scale = `${percentage / 100} 1`;
+
     // this.scoreElement.textContent = `Bounced ${this.bounce}x`;
   }
 }
@@ -469,10 +470,10 @@ class Tree {
 
     this.element.style.width = `${this.width * 100}%`;
     this.element.style.height = `${this.height * 100}%`;
+    this.element.style.left = `0%`;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
 
     this.leaves.style.aspectRatio = this.ratio;
-    // this.element.style.top = `${this.y * 100}%`;
-    // this.element.style.left = `${this.x * 100}%`;
 
     this.element.append(this.leaves, this.trunk);
 
@@ -481,7 +482,7 @@ class Tree {
 
   update() {
     this.x += this.game.taxi.offsetX * this.proximity;
-    this.element.style.left = `${this.x * 100}%`;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
 
     if (this.x < this.game.bounds.left) {
       this.destroy();
@@ -511,7 +512,7 @@ class Taxi {
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
-    this.speed.min = 1;
+    this.speed.min = 0.75;
     this.speed.max = 2.5;
     this.speed.x = this.speed.min;
     this.speed.increaseX = 0.1; // % of screen per second
@@ -891,7 +892,8 @@ class Obstacle {
     this.element.style.width = `${this.width * 100}%`;
     this.element.style.height = `${this.height * 100}%`;
     this.element.style.top = `${this.y * 100}%`;
-    this.element.style.left = `${this.x * 100}%`;
+    this.element.style.left = `0%`;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
 
     this.game.element.append(this.element);
   }
@@ -905,7 +907,8 @@ class Obstacle {
     //   this.element.style.outline = "none";
     // }
 
-    this.element.style.left = `${this.x * 100}%`;
+    // this.element.style.left = `${this.x * 100}%`;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
 
     if (this.x < this.game.bounds.left) {
       this.destroy();

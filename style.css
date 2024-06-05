@@ -243,7 +243,7 @@ body {
 
 .grid {
   display: flex;
-  display: none;
+  /* display: none; */
   flex-wrap: wrap;
   left: 0;
   opacity: 0.5;
@@ -423,6 +423,7 @@ body {
       position: absolute;
       top: 0;
       width: 100%;
+      transform-origin: left center;
     }
   }
 
