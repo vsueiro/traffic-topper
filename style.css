@@ -7,6 +7,12 @@
   --wheel-spin-duration: 0.5s;
   --speedometer-rotation: -90deg;
   --font-family: "Work Sans", sans-serif;
+
+  /* Indigo mixed with RebeccaPurple in various levels */
+  --indigo-75: #520e88;
+  --indigo-50: #581b8d;
+  --indigo-25: #5f2793;
+  --indigo-12: #632d96;
 }
 
 @media (min-width: 576px) {
@@ -537,7 +543,6 @@ body {
 .tree {
   bottom: calc(var(--cell) * 0);
   height: calc(var(--cell) * 2);
-  opacity: 1;
   overflow: hidden;
   position: absolute;
   width: calc(var(--cell) * 1);
@@ -546,8 +551,8 @@ body {
   .leaves {
     align-items: center;
     aspect-ratio: 1;
-    background-color: rgba(76, 0, 130, 0.5);
-    border: calc(var(--cell) * 0.0625) solid Indigo;
+    background: var(--indigo-12);
+    border: calc(var(--cell) * 0.0625) solid var(--indigo-50);
     border-radius: calc(var(--cell) * 1);
     content: "";
     display: flex;
@@ -558,7 +563,7 @@ body {
     top: 0;
 
     &::before {
-      background: Indigo;
+      background: var(--indigo-50);
       border-radius: 999px;
       bottom: 37.5%;
       content: "";
@@ -573,7 +578,7 @@ body {
     }
 
     &::after {
-      background: Indigo;
+      background: var(--indigo-50);
       border-radius: 999px;
       bottom: 25%;
       content: "";
@@ -590,7 +595,7 @@ body {
   }
 
   .trunk {
-    background: Indigo;
+    background: var(--indigo-50);
     border-radius: 999px 999px 0 0;
     bottom: 0;
     content: "";

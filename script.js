@@ -396,11 +396,29 @@ class Trees {
     // this.element = document.createElement("div");
     this.list = [];
     this.chance = 0.025;
+    this.initialTrees = 12;
 
     this.setup();
   }
 
+  convertRange(value, fromMin, fromMax, toMin, toMax) {
+    return toMin + ((value - fromMin) * (toMax - toMin)) / (fromMax - fromMin);
+  }
+
   setup() {
+    for (let i = 0; i < this.initialTrees; i++) {
+      const x = this.convertRange(
+        Math.random(),
+        0,
+        1,
+        -this.game.bounds.right,
+        this.game.bounds.right
+      );
+
+      const tree = new Tree(this.game, x);
+      this.list.push(tree);
+    }
+
     // this.element.classList.add("trees");
     // this.game.element.append(this.element);
   }
@@ -418,7 +436,7 @@ class Trees {
 }
 
 class Tree {
-  constructor(game) {
+  constructor(game, x) {
     this.game = game;
     this.element = document.createElement("div");
     this.leaves = document.createElement("div");
@@ -434,7 +452,7 @@ class Tree {
     this.ratio = this.random(this.ratios);
     this.proximity = this.random(this.proximities);
 
-    this.x = this.game.bounds.right;
+    this.x = x || this.game.bounds.right;
 
     this.setup();
   }
