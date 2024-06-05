@@ -54,8 +54,7 @@ body {
 
 #game {
   aspect-ratio: 2/1;
-  /* background: rebeccapurple; */
-  margin: 16px auto;
+  margin: 96px auto 0;
   max-width: 576px;
   overflow: visible;
   position: relative;
@@ -268,6 +267,7 @@ body {
   margin: 0 auto;
   max-width: 576px;
   position: absolute;
+  z-index: 12;
 
   button {
     align-items: center;
@@ -375,7 +375,7 @@ body {
   scale: 0.0625;
   transition: scale 0.1s var(--easeOutBack);
   translate: -50% -50%;
-  z-index: 11;
+  z-index: 13;
 }
 
 .scoreboard {
@@ -396,6 +396,7 @@ body {
   position: absolute;
   right: calc(var(--cell) * 1.5);
   width: calc(var(--cell) * 4);
+  z-index: 12;
 
   .progress {
     border-radius: calc(var(--cell) * 0.125);
@@ -490,7 +491,7 @@ body {
   left: calc(var(--cell) * 4);
   position: absolute;
   width: calc(var(--cell) * 2);
-  z-index: 1;
+  z-index: 12;
 
   &::before {
     border: calc(var(--cell) * 0.0625) dotted Lavender;
@@ -613,5 +614,56 @@ body {
     top: calc(var(--cell) * 0.5);
     translate: -50%;
     width: calc(var(--cell) * 0.0625);
+  }
+}
+
+.sky {
+  background: linear-gradient(RebeccaPurple, rgba(255, 99, 71, 0.25));
+  bottom: 0;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+  translate: -50%;
+  width: 100%;
+  z-index: 1;
+}
+
+.road {
+  /* border-bottom: calc(var(--cell) * 0.0625) solid Indigo; */
+  /* bottom: calc(var(--cell) * -0.125); */
+  bottom: 0;
+  height: 100%;
+  /* height: calc(var(--cell) * 0.0625); */
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  translate: -50%;
+  width: 100%;
+  z-index: 11;
+
+  &::before {
+    background-color: red;
+    background: linear-gradient(Indigo, RebeccaPurple);
+    /* https://www.joshwcomeau.com/gradient-generator/ */
+    background-image: linear-gradient(
+      180deg,
+      hsl(275deg 100% 25%) 0%,
+      hsl(272deg 77% 29%) 21%,
+      hsl(271deg 70% 31%) 30%,
+      hsl(271deg 65% 33%) 39%,
+      hsl(270deg 61% 34%) 46%,
+      hsl(270deg 58% 36%) 54%,
+      hsl(270deg 56% 37%) 61%,
+      hsl(270deg 53% 38%) 69%,
+      hsl(270deg 52% 39%) 79%,
+      hsl(270deg 50% 40%) 100%
+    );
+    bottom: -50%;
+    content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
   }
 }

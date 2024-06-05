@@ -212,12 +212,15 @@ class Game {
   setup() {
     this.over = false;
     this.won = false;
+
     // this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
     this.obstacles = new Obstacles(this);
     this.trees = new Trees(this);
+    this.sky = new Sky(this);
+    this.road = new Road(this);
     this.scoreboard = new Scoreboard(this);
     this.speedometer = new Speedometer(this);
     this.startTime = Date.now();
@@ -391,6 +394,44 @@ class Template {
 }
 */
 
+class Sky {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.width = 1 + this.game.bounds.right - this.game.bounds.left;
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add("sky");
+    this.element.style.width = `${this.width * 100}%`;
+
+    this.game.element.append(this.element);
+  }
+
+  update() {}
+}
+
+class Road {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.width = 1 + this.game.bounds.right - this.game.bounds.left;
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add("road");
+    this.element.style.width = `${this.width * 100}%`;
+
+    this.game.element.append(this.element);
+  }
+
+  update() {}
+}
+
 class Trees {
   constructor(game) {
     this.game = game;
@@ -447,7 +488,7 @@ class Tree {
     this.leaves = document.createElement("div");
     this.trunk = document.createElement("div");
 
-    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5];
+    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4];
     this.widths = [1, 1.25, 1.5];
     this.ratios = [1, , 0.875, 0.75, 0.625];
     this.proximities = [0.725, 0.75, 0.775];
