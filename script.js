@@ -234,10 +234,10 @@ class Game {
     if (game.over) {
       // window.alert("Game Over");
 
-      // setTimeout(() => {
-      //   this.element.dataset.restarting = true;
-      //   this.restart();
-      // }, 3000);
+      setTimeout(() => {
+        this.element.dataset.restarting = true;
+        this.restart();
+      }, 5000);
 
       return;
     }
@@ -488,7 +488,7 @@ class Tree {
     this.leaves = document.createElement("div");
     this.trunk = document.createElement("div");
 
-    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4];
+    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5];
     this.widths = [1, 1.25, 1.5];
     this.ratios = [1, , 0.875, 0.75, 0.625];
     this.proximities = [0.725, 0.75, 0.775];
