@@ -155,6 +155,8 @@ class Game {
     this.bounds = {};
     this.bounds.right = 2.5;
     this.bounds.left = -2.5;
+    this.bounds.right = 3;
+    this.bounds.left = -3;
     this.isOver = false;
     this.isWon = false;
     this.startTime;
@@ -487,16 +489,22 @@ class Tree {
     this.element = document.createElement("div");
     this.leaves = document.createElement("div");
     this.trunk = document.createElement("div");
+    this.ground = document.createElement("div");
 
-    this.heights = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5];
+    this.heights = [2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5];
     this.widths = [1, 1.25, 1.5];
     this.ratios = [1, , 0.875, 0.75, 0.625];
     this.proximities = [0.725, 0.75, 0.775];
+    this.groundHeights = [0, 0.0625, 0.125, 0.25, 0.3125, 0.375];
+    this.groundWidths = [8, 12, 16, 20, 24, 28, 32];
 
     this.height = (1 / this.game.rows) * this.random(this.heights);
     this.width = (1 / this.game.cols) * this.random(this.widths);
     this.ratio = this.random(this.ratios);
     this.proximity = this.random(this.proximities);
+
+    this.groundHeight = this.random(this.groundHeights);
+    this.groundWidth = this.random(this.groundWidths);
 
     this.x = x || this.game.bounds.right;
 
@@ -512,6 +520,7 @@ class Tree {
     this.element.classList.add("tree");
     this.leaves.classList.add("leaves");
     this.trunk.classList.add("trunk");
+    this.ground.classList.add("ground");
 
     this.element.style.width = `${this.width * 100}%`;
     this.element.style.height = `${this.height * 100}%`;
@@ -520,7 +529,10 @@ class Tree {
     this.element.style.zIndex = Math.round(this.proximity * 1000);
 
     this.leaves.style.aspectRatio = this.ratio;
-    this.element.append(this.leaves, this.trunk);
+    this.ground.style.height = `calc( var(--cell) * ${this.groundHeight})`;
+    this.ground.style.width = `calc( var(--cell) * ${this.groundWidth})`;
+
+    this.element.append(this.leaves, this.trunk, this.ground);
 
     this.game.trees.element.append(this.element);
   }
