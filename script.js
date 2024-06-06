@@ -66,6 +66,27 @@ class Obstacles {
     return Math.floor(Math.random() * this.gapMax) + this.gapMin;
   }
 
+  get isLastObstacleCleared() {
+    if (this.list.length <= 0) {
+      return true;
+    }
+
+    const last = this.list.at(-1);
+
+    return last.isCleared;
+  }
+
+  removeIncomingObstacles() {
+    const visually = true;
+
+    for (let i = this.list.length - 1; i >= 0; i--) {
+      const obstacle = this.list[i];
+      if (obstacle.isIncoming) {
+        obstacle.destroy(visually);
+      }
+    }
+  }
+
   setup() {
     this.randomObstacle;
   }
@@ -217,7 +238,7 @@ class Game {
     this.over = false;
     this.won = false;
 
-    // this.grid = new Grid(this);
+    this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -236,13 +257,10 @@ class Game {
 
   update(game) {
     if (game.over) {
-      // window.alert("Game Over");
-
       setTimeout(() => {
         this.element.dataset.restarting = true;
         this.restart();
       }, 5000);
-
       return;
     }
 
@@ -250,12 +268,13 @@ class Game {
 
     if (this.countdown <= 0) {
       this.countdown = 0;
-      // this.over = true;
       this.won = true;
     }
 
     this.taxi.update();
     this.speedometer.update();
+    this.trees.update();
+    this.scoreboard.update();
 
     if (this.allowsNewObstacle) {
       let obstacle = new Obstacle(this);
@@ -286,8 +305,25 @@ class Game {
       obstacle.update();
     }
 
-    this.trees.update();
-    this.scoreboard.update();
+    if (this.isWon) {
+      this.obstacles.removeIncomingObstacles();
+
+      if (this.obstacles.isLastObstacleCleared) {
+        if (this.airport === undefined) {
+          this.airport = new Airport(this);
+        }
+
+        if (this.airport) {
+          this.airport.update();
+        }
+
+        this.taxi.isBreaking = true;
+
+        if (this.taxi.position > 0) {
+          this.taxi.move(-1);
+        }
+      }
+    }
 
     this.elapsedTime = Date.now() - this.startTime;
 
@@ -557,6 +593,40 @@ class Tree {
   }
 }
 
+class Airport {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+
+    this.h = 6;
+    this.w = 24;
+
+    this.height = (1 / this.game.rows) * this.h;
+    this.width = (1 / this.game.cols) * this.w;
+    this.proximity = 1;
+
+    this.x = this.game.bounds.right;
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add("airport");
+
+    this.element.style.width = `${this.width * 100}%`;
+    this.element.style.height = `${this.height * 100}%`;
+    this.element.style.left = `0%`;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+
+    this.game.element.append(this.element);
+  }
+
+  update() {
+    this.x += this.game.taxi.offsetX * this.proximity;
+    this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+  }
+}
+
 class Taxi {
   constructor(game) {
     this.game = game;
@@ -571,14 +641,16 @@ class Taxi {
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
-    this.speed.min = 0.75;
-    this.speed.max = 1; //2.5;
-    this.speed.x = this.speed.min;
+    this.speed.min = 0;
+    this.speed.max = 2.5;
+    this.speed.x = 0.75;
+    this.speed.decreaseX = -1; // % of screen per second
     this.speed.increaseX = 0.1; // % of screen per second
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
     this.autopilot = true;
+    this.isBreaking = false;
 
     this.setup();
   }
@@ -673,14 +745,22 @@ class Taxi {
   accelerate() {
     const deltaTime = this.game.elapsedTime - this.timeOfLastUpdate;
 
-    const increasePerMs = this.speed.increaseX / 1000;
-    const increase = deltaTime * increasePerMs;
-    const newSpeed = this.speed.x + increase;
+    const factor = this.isBreaking
+      ? this.speed.decreaseX
+      : this.speed.increaseX;
 
-    if (newSpeed < this.speed.max) {
-      this.speed.x = newSpeed;
-    } else {
+    console.log(factor);
+
+    const distancePerMs = factor / 1000;
+    const distance = deltaTime * distancePerMs;
+    const newSpeed = this.speed.x + distance;
+
+    if (newSpeed > this.speed.max) {
       this.speed.x = this.speed.max;
+    } else if (newSpeed < this.speed.min) {
+      this.speed.x = this.speed.min;
+    } else {
+      this.speed.x = newSpeed;
     }
   }
 
@@ -937,8 +1017,23 @@ class Obstacle {
     return true;
   }
 
-  destroy() {
-    this.element.remove();
+  get isCleared() {
+    const taxi = this.game.taxi;
+    return this.x + this.width < taxi.x;
+  }
+
+  get isIncoming() {
+    const taxi = this.game.taxi;
+    return this.x >= taxi.x + taxi.width;
+  }
+
+  destroy(visually = false) {
+    if (visually) {
+      // TODO: Add animation before complete removal
+      this.element.remove();
+    } else {
+      this.element.remove();
+    }
 
     const index = this.game.obstacles.list.indexOf(this);
     if (index > -1) {

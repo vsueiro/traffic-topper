@@ -744,6 +744,12 @@ body {
   }
 }
 
+.airport {
+  background-color: Blue;
+  position: absolute;
+  z-index: 11;
+}
+
 @keyframes scanline {
   0% {
     transform: translate3d(0, 0, 0);
