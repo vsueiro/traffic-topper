@@ -153,8 +153,6 @@ class Game {
     this.cols = 12;
     this.rows = 6;
     this.bounds = {};
-    this.bounds.right = 2.5;
-    this.bounds.left = -2.5;
     this.bounds.right = 3;
     this.bounds.left = -3;
     this.isOver = false;
@@ -186,6 +184,10 @@ class Game {
   }
 
   get allowsNewObstacle() {
+    if (this.isWon) {
+      return false;
+    }
+
     if (this.obstacles.list.length === 0) {
       return true;
     }
@@ -248,7 +250,7 @@ class Game {
 
     if (this.countdown <= 0) {
       this.countdown = 0;
-      this.over = true;
+      // this.over = true;
       this.won = true;
     }
 
@@ -570,7 +572,7 @@ class Taxi {
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
     this.speed.min = 0.75;
-    this.speed.max = 2.5;
+    this.speed.max = 1; //2.5;
     this.speed.x = this.speed.min;
     this.speed.increaseX = 0.1; // % of screen per second
     this.offsetX = 0;
