@@ -344,6 +344,66 @@ body {
   }
 }
 
+button.restart {
+  align-items: center;
+  background: RebeccaPurple;
+  border-radius: calc(var(--cell) * 0.25);
+  box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
+    0 calc(var(--cell) * 0.25) 0 0 Tomato;
+  color: Lavender;
+  cursor: pointer;
+  display: flex;
+  font-size: calc(var(--cell) * 0.4);
+  height: 50%;
+  height: calc(var(--cell) * 1);
+  justify-content: center;
+  letter-spacing: 0.1em;
+  outline: none;
+  overflow: hidden;
+  position: absolute;
+  position: relative;
+  text-transform: uppercase;
+  transition: all 0.05s;
+  transition: all 0.05s;
+  width: calc(var(--cell) * 2);
+  z-index: 13;
+
+  span {
+    position: relative;
+  }
+
+  &:active,
+  &.pressed {
+    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
+      0 calc(var(--cell) * 0.125) 0 0 Tomato;
+    translate: 0 calc(var(--cell) * 0.125);
+
+    &::before {
+      opacity: 0.25;
+    }
+  }
+
+  &::before {
+    background: Tomato;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &:hover::before {
+    opacity: 0.25;
+  }
+
+  &:active::before {
+    opacity: 0.5;
+  }
+}
+
 .obstacle {
   position: absolute;
   z-index: 5;

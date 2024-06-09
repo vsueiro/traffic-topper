@@ -225,8 +225,15 @@ class Game {
   }
 
   restart() {
+    cancelAnimationFrame(this.nextAnimationFrame);
+
     this.element.replaceChildren();
+    for (let property in this) {
+      this[property] = undefined;
+    }
     window.game = new Game();
+
+    // TODO: remove all event listeners from document etc (those not attached to specific elements)
   }
 
   haveCommonElements(arr1, arr2) {
@@ -238,7 +245,7 @@ class Game {
     this.over = false;
     this.won = false;
 
-    this.grid = new Grid(this);
+    // this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -250,17 +257,13 @@ class Game {
     this.speedometer = new Speedometer(this);
     this.startTime = Date.now();
 
-    requestAnimationFrame(() => {
+    this.nextAnimationFrame = requestAnimationFrame(() => {
       this.update(this);
     });
   }
 
   update(game) {
     if (game.over) {
-      setTimeout(() => {
-        this.element.dataset.restarting = true;
-        this.restart();
-      }, 5000);
       return;
     }
 
@@ -417,6 +420,52 @@ class Speedometer {
     root.style.setProperty("--speedometer-rotation", `${degrees}deg`);
   }
 }
+
+class RestartButton {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("button");
+
+    this.w = 3;
+    this.h = 1;
+    this.width = (1 / this.game.cols) * this.w;
+    this.height = (1 / this.game.rows) * this.h;
+    this.y = (1 / this.game.rows) * 2.5;
+    this.x = (1 / this.game.cols) * 4.5;
+
+    this.setup();
+  }
+
+  setup() {
+    this.element.classList.add("restart");
+    this.element.style.width = `${this.width * 100}%`;
+    this.element.style.height = `${this.height * 100}%`;
+    this.element.style.left = `${this.x * 100}%`;
+    this.element.style.top = `${this.y * 100}%`;
+
+    this.element.innerHTML = "<span>Restart</span>";
+    this.element.addEventListener("click", () => {
+      this.game.restart();
+    });
+
+    this.game.element.append(this.element);
+  }
+
+  press() {
+    this.element.classList.add("pressed");
+  }
+
+  unpress() {
+    this.element.classList.remove("pressed");
+
+    if (this.isEscapePressed) {
+      return;
+    }
+
+    this.game.restart();
+  }
+}
+
 /*
 class Template {
   constructor(game) {
@@ -604,8 +653,8 @@ class Airplane {
     this.w = 3;
     this.h = 1;
     this.width = (1 / this.game.cols) * this.w;
-    this.height = (1 / this.game.rows) * (this.h - 0.5);
-    this.y = (1 / this.game.cols) * (this.game.cols - this.h);
+    this.height = (1 / this.game.rows) * this.h;
+    this.y = (1 / this.game.rows) * (this.game.rows - this.h);
     this.x = (1 / this.game.cols) * 1;
     this.speed = {};
     this.speed.y = -4;
@@ -628,7 +677,7 @@ class Airplane {
     this.element.classList.add("airplane");
     this.element.style.width = `${this.width * 100}%`;
     this.element.style.height = `${this.height * 100}%`;
-    this.element.style.top = `${this.x * 100}%`;
+    this.element.style.left = `${this.x * 100}%`;
     this.element.style.top = `${this.y * 100}%`;
 
     this.game.element.append(this.element);
@@ -934,15 +983,40 @@ class Taxi {
 class Controls {
   constructor(game) {
     this.game = game;
+
+    this.restartButton = new RestartButton(this.game);
+
     this.element = document.createElement("div");
     this.buttonUp = document.createElement("button");
     this.buttonDown = document.createElement("button");
+
     this.touch = {};
     this.touch.tolerance = 24;
 
     this.visualizer = document.c;
 
     this.setup();
+  }
+
+  addSpacebar() {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        this.restartButton.isEscapePressed = true;
+      }
+
+      if (event.key === " ") {
+        this.restartButton.press();
+      }
+    });
+    document.addEventListener("keyup", (event) => {
+      if (event.key === "Escape") {
+        this.restartButton.isEscapePressed = false;
+      }
+
+      if (event.key === " ") {
+        this.restartButton.unpress();
+      }
+    });
   }
 
   addArrowKeys() {
@@ -1036,6 +1110,7 @@ class Controls {
   }
 
   setup() {
+    this.addSpacebar();
     this.addArrowKeys();
     this.addWASD();
     this.addButtons();
