@@ -180,7 +180,7 @@ class Game {
     this.isWon = false;
     this.startTime;
     this.elapsedTime = 0;
-    this.timeLimit = 30 * 1000;
+    this.timeLimit = 15 * 1000;
     this.countdown = this.timeLimit;
 
     this.setup();
@@ -317,7 +317,7 @@ class Game {
           this.airport.update();
         }
 
-        this.taxi.isBreaking = true;
+        // this.taxi.isBreaking = true;
 
         if (this.taxi.position > 0) {
           this.taxi.move(-1);
@@ -345,6 +345,10 @@ class TaxiWheels {
     this.x = (1 / this.game.cols) * 1;
 
     this.setup();
+  }
+
+  hide() {
+    this.element.style.display = "none";
   }
 
   setup() {
@@ -593,6 +597,52 @@ class Tree {
   }
 }
 
+class Airplane {
+  constructor(game) {
+    this.game = game;
+    this.element = document.createElement("div");
+    this.w = 3;
+    this.h = 1;
+    this.width = (1 / this.game.cols) * this.w;
+    this.height = (1 / this.game.rows) * (this.h - 0.5);
+    this.y = (1 / this.game.cols) * (this.game.cols - this.h);
+    this.x = (1 / this.game.cols) * 1;
+    this.speed = {};
+    this.speed.y = -4;
+    this.translateY = 4; // 0 for no delay
+    this.timeOfLastUpdate = this.game.taxi.timeOfLastUpdate;
+
+    this.setup();
+  }
+
+  get offsetY() {
+    const deltaTime = this.game.elapsedTime - this.timeOfLastUpdate;
+    const offsetPerMs = this.speed.y / 1000;
+    const offset = deltaTime * offsetPerMs;
+    this.timeOfLastUpdate = this.game.elapsedTime;
+
+    return offset;
+  }
+
+  setup() {
+    this.element.classList.add("airplane");
+    this.element.style.width = `${this.width * 100}%`;
+    this.element.style.height = `${this.height * 100}%`;
+    this.element.style.top = `${this.x * 100}%`;
+    this.element.style.top = `${this.y * 100}%`;
+
+    this.game.element.append(this.element);
+  }
+
+  update() {
+    // this.translateY += this.offsetY;
+    // if (this.translateY > 0) {
+    //   return;
+    // }
+    // this.element.style.translate = `0 calc( var(--cell) * ${this.translateY})`;
+  }
+}
+
 class Airport {
   constructor(game) {
     this.game = game;
@@ -610,6 +660,16 @@ class Airport {
     this.setup();
   }
 
+  get shouldTakeoff() {
+    const taxi = this.game.taxi;
+
+    const tolerance = (1 / this.game.rows) * 1;
+    const taxiRightEdge = taxi.x + taxi.width;
+    const airportRightEdge = this.x + this.width;
+
+    return taxiRightEdge > airportRightEdge - tolerance;
+  }
+
   setup() {
     this.element.classList.add("airport");
 
@@ -624,6 +684,20 @@ class Airport {
   update() {
     this.x += this.game.taxi.offsetX * this.proximity;
     this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+
+    if (this.shouldTakeoff) {
+      this.game.taxi.hide();
+      this.game.taxiWheels.hide();
+      this.takeoff();
+    }
+  }
+
+  takeoff() {
+    if (!this.airplane) {
+      this.airplane = new Airplane(this.game);
+    }
+
+    this.airplane.update();
   }
 }
 
@@ -749,8 +823,6 @@ class Taxi {
       ? this.speed.decreaseX
       : this.speed.increaseX;
 
-    console.log(factor);
-
     const distancePerMs = factor / 1000;
     const distance = deltaTime * distancePerMs;
     const newSpeed = this.speed.x + distance;
@@ -824,6 +896,10 @@ class Taxi {
     }
 
     this.update();
+  }
+
+  hide() {
+    this.element.style.display = "none";
   }
 
   update() {

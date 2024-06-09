@@ -744,6 +744,31 @@ body {
   }
 }
 
+@keyframes takeoff {
+  0% {
+    rotate: 0deg;
+    translate: 0 0;
+  }
+  50% {
+    rotate: -15deg;
+  }
+  100% {
+    rotate: -15deg;
+    translate: 0 calc(var(--cell) * -16);
+  }
+}
+
+.airplane {
+  animation: takeoff calc(var(--transitionDuration) * 24);
+  animation-delay: calc(var(--transitionDuration) * 2);
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  background: Tomato;
+  position: absolute;
+  transform-origin: left bottom;
+  z-index: 10;
+}
+
 .airport {
   background-color: Blue;
   position: absolute;
