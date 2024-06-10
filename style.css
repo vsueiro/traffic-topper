@@ -13,6 +13,12 @@
   --indigo-50: #581b8d;
   --indigo-25: #5f2793;
   --indigo-12: #632d96;
+
+  /* 50% Plum on top of RebeccaPurple */
+  --rebeccapurple-50: #a16abc;
+
+  /* 25% Plum on top of RebeccaPurple */
+  --rebeccapurple-25: #834faa;
 }
 
 @media (min-width: 576px) {
@@ -348,8 +354,8 @@ button.restart {
   align-items: center;
   background: RebeccaPurple;
   border-radius: calc(var(--cell) * 0.25);
-  box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
-    0 calc(var(--cell) * 0.25) 0 0 Tomato;
+  box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) HotPink,
+    0 calc(var(--cell) * 0.25) 0 0 HotPink;
   color: Lavender;
   cursor: pointer;
   display: flex;
@@ -364,9 +370,14 @@ button.restart {
   position: relative;
   text-transform: uppercase;
   transition: all 0.05s;
-  transition: all 0.05s;
   width: calc(var(--cell) * 2);
   z-index: 13;
+
+  &.center {
+    top: calc(var(--cell) * 2.375) !important;
+    transition: top 2s;
+    transition-delay: 2s;
+  }
 
   span {
     position: relative;
@@ -374,8 +385,8 @@ button.restart {
 
   &:active,
   &.pressed {
-    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
-      0 calc(var(--cell) * 0.125) 0 0 Tomato;
+    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) HotPink,
+      0 calc(var(--cell) * 0.125) 0 0 HotPink;
     translate: 0 calc(var(--cell) * 0.125);
 
     &::before {
@@ -384,7 +395,7 @@ button.restart {
   }
 
   &::before {
-    background: Tomato;
+    background: HotPink;
     bottom: 0;
     content: "";
     display: block;
@@ -507,10 +518,10 @@ button.restart {
 .scoreboard {
   align-items: center;
   background: rgba(64, 224, 208, 0.5);
-  border: calc(var(--cell) * 0.0625) solid Plum;
+  border: calc(var(--cell) * 0.0625) solid var(--rebeccapurple-50);
   border-radius: calc(var(--cell) * 0.25);
   bottom: calc(var(--cell) * -3);
-  box-shadow: 0 calc(var(--cell) * 0.25) 0 0 Plum,
+  box-shadow: 0 calc(var(--cell) * 0.25) 0 0 var(--rebeccapurple-50),
     inset 0 0 0 calc(var(--cell) * 0.0625) Indigo;
   color: Plum;
   display: flex;
@@ -609,10 +620,10 @@ button.restart {
 
 .speedometer {
   background: Indigo;
-  border: calc(var(--cell) * 0.0625) solid Plum;
+  border: calc(var(--cell) * 0.0625) solid var(--rebeccapurple-50);
   border-radius: calc(var(--cell) * 0.25);
   bottom: calc(var(--cell) * -3);
-  box-shadow: 0 calc(var(--cell) * 0.25) 0 0 Plum;
+  box-shadow: 0 calc(var(--cell) * 0.25) 0 0 var(--rebeccapurple-50);
   height: calc(var(--cell) * 2);
   left: calc(var(--cell) * 4);
   position: absolute;
@@ -807,14 +818,14 @@ button.restart {
 @keyframes takeoff {
   0% {
     rotate: 0deg;
-    translate: 0 0;
+    translate: calc(var(--cell) * -5) 0;
   }
   50% {
     rotate: -15deg;
   }
   100% {
     rotate: -15deg;
-    translate: 0 calc(var(--cell) * -16);
+    translate: calc(var(--cell) * 8) calc(var(--cell) * -16);
   }
 }
 
@@ -826,6 +837,7 @@ button.restart {
   background: Tomato;
   position: absolute;
   transform-origin: left bottom;
+  translate: calc(var(--cell) * -5) 0;
   z-index: 10;
 }
 

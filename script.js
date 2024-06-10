@@ -426,12 +426,12 @@ class RestartButton {
     this.game = game;
     this.element = document.createElement("button");
 
-    this.w = 3;
+    this.w = 6;
     this.h = 1;
     this.width = (1 / this.game.cols) * this.w;
     this.height = (1 / this.game.rows) * this.h;
-    this.y = (1 / this.game.rows) * 2.5;
-    this.x = (1 / this.game.cols) * 4.5;
+    this.y = (1 / this.game.rows) * 9.75;
+    this.x = (1 / this.game.cols) * 3;
 
     this.setup();
   }
@@ -463,6 +463,10 @@ class RestartButton {
     }
 
     this.game.restart();
+  }
+
+  center() {
+    this.element.classList.add("center");
   }
 }
 
@@ -650,8 +654,8 @@ class Airplane {
   constructor(game) {
     this.game = game;
     this.element = document.createElement("div");
-    this.w = 3;
-    this.h = 1;
+    this.w = 8;
+    this.h = 2;
     this.width = (1 / this.game.cols) * this.w;
     this.height = (1 / this.game.rows) * this.h;
     this.y = (1 / this.game.rows) * (this.game.rows - this.h);
@@ -712,7 +716,7 @@ class Airport {
   get shouldTakeoff() {
     const taxi = this.game.taxi;
 
-    const tolerance = (1 / this.game.rows) * 1;
+    const tolerance = (1 / this.game.rows) * (0 + 2);
     const taxiRightEdge = taxi.x + taxi.width;
     const airportRightEdge = this.x + this.width;
 
@@ -724,6 +728,7 @@ class Airport {
 
     this.element.style.width = `${this.width * 100}%`;
     this.element.style.height = `${this.height * 100}%`;
+    this.element.style.top = `0%`;
     this.element.style.left = `0%`;
     this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
 
@@ -747,6 +752,8 @@ class Airport {
     }
 
     this.airplane.update();
+
+    this.game.controls.restartButton.center();
   }
 }
 
@@ -764,7 +771,7 @@ class Taxi {
     this.height = (1 / this.game.rows) * (this.h - 0.5);
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
-    this.speed.min = 0;
+    this.speed.min = 0.75;
     this.speed.max = 2.5;
     this.speed.x = 0.75;
     this.speed.decreaseX = -1; // % of screen per second
