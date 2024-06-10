@@ -502,64 +502,123 @@ button.restart {
   &::before {
     background: HotPink;
     border: calc(var(--cell) * 0.0625) solid DeepPink;
-    border-radius: calc(var(--cell) * 0.5);
+    border-radius: calc(var(--cell) * 0.5) calc(var(--cell) * 0.75)
+      calc(var(--cell) * 0.5) calc(var(--cell) * 1.5);
     bottom: calc(var(--cell) * 0.5);
     content: "";
     left: 0;
     position: absolute;
     right: 0;
-    top: 0;
-  }
-}
-
-.bus .wheels {
-  background-color: lightblue;
-  bottom: 0;
-  height: calc(var(--cell) * 1);
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: initial;
-
-  &::before {
-    aspect-ratio: 1;
-    /* animation: spin var(--wheel-spin-duration) infinite linear; */
-    background: RebeccaPurple;
-    border: calc(var(--cell) * 0.25) solid Indigo;
-    border-bottom-color: hsl(275, 100%, 20%);
-    border-radius: 50%;
-    border-top-color: hsl(275, 100%, 20%);
-    bottom: 0;
-    box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
-      inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
-    content: "";
-    display: flex;
-    height: calc(var(--cell) * 1);
-    left: 0;
-    position: absolute;
-    right: initial;
-    /* transition: border-color 0.2s; */
-    width: calc(var(--cell) * 1);
+    top: calc(var(--cell) * 0.25);
   }
 
   &::after {
-    aspect-ratio: 1;
-    /* animation: spin var(--wheel-spin-duration) infinite linear; */
-    background: RebeccaPurple;
-    border: calc(var(--cell) * 0.25) solid Indigo;
-    border-bottom-color: hsl(275, 100%, 20%);
-    border-radius: 50%;
-    border-top-color: hsl(275, 100%, 20%);
-    bottom: 0;
-    box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
-      inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
+    background: HotPink;
+    border: calc(var(--cell) * 0.0625) solid DeepPink;
+    border-bottom: none;
+    border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.25) 0 0;
+    bottom: calc(var(--cell) * 0.5);
     content: "";
-    display: flex;
+    height: calc(var(--cell) * 0.25);
+    left: calc(var(--cell) * 1);
+    position: absolute;
+    top: 0;
+    width: calc(var(--cell) * 2);
+  }
+
+  .wheels {
+    bottom: 0;
     height: calc(var(--cell) * 1);
+    left: 0;
     position: absolute;
     right: 0;
-    /* transition: border-color 0.2s; */
-    width: calc(var(--cell) * 1);
+    top: initial;
+
+    &::before {
+      aspect-ratio: 1;
+      /* animation: spin var(--wheel-spin-duration) infinite linear; */
+      background: RebeccaPurple;
+      border: calc(var(--cell) * 0.25) solid Indigo;
+      border-bottom-color: hsl(275, 100%, 20%);
+      border-radius: 50%;
+      border-top-color: hsl(275, 100%, 20%);
+      bottom: 0;
+      box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
+        inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
+      content: "";
+      display: flex;
+      height: calc(var(--cell) * 1);
+      left: calc(var(--cell) * 1.5);
+      position: absolute;
+      right: initial;
+      width: calc(var(--cell) * 1);
+    }
+
+    &::after {
+      aspect-ratio: 1;
+      background: RebeccaPurple;
+      border: calc(var(--cell) * 0.25) solid Indigo;
+      border-bottom-color: hsl(275, 100%, 20%);
+      border-radius: 50%;
+      border-top-color: hsl(275, 100%, 20%);
+      bottom: 0;
+      box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
+        inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
+      content: "";
+      display: flex;
+      height: calc(var(--cell) * 1);
+      position: absolute;
+      right: calc(var(--cell) * 0.5);
+      /* transition: border-color 0.2s; */
+      width: calc(var(--cell) * 1);
+    }
+  }
+
+  .glass {
+    background: Plum;
+    background-image: linear-gradient(
+      90deg,
+      Transparent 93.25%,
+      DeepPink 93.25%,
+      DeepPink 100%
+    );
+    background-size: calc(var(--cell) * 1) calc(var(--cell) * 1);
+    border-radius: calc(var(--cell) * 0.5) calc(var(--cell) * 0)
+      calc(var(--cell) * 0) calc(var(--cell) * 0.5);
+    box-shadow: 0 0 0 calc(var(--cell) * 0.0625) DeepPink;
+    height: calc(var(--cell) * 1);
+    left: calc(var(--cell) * 1);
+    position: absolute;
+    right: calc(var(--cell) * 0.0625);
+    top: calc(var(--cell) * 1);
+
+    &::before {
+      background: Plum;
+      border-radius: calc(var(--cell) * 0.5) 0 0 calc(var(--cell) * 0.5);
+      bottom: calc(var(--cell) * -0.75);
+      box-shadow: 0 0 0 calc(var(--cell) * 0.0625) DeepPink;
+      content: "";
+      display: block;
+      height: calc(var(--cell) * 0.325);
+      position: absolute;
+      right: 0;
+      width: calc(var(--cell) * 0.5);
+    }
+
+    &::after {
+      border: calc(var(--cell) * 0.125) solid DeepPink;
+      border-bottom: 0;
+      border-left: 0;
+      border-radius: calc(var(--cell) * 0.125) calc(var(--cell) * 0.25)
+        calc(var(--cell) * 0.125) 0;
+      content: "";
+      display: block;
+      height: calc(var(--cell) * 0.6125);
+      position: absolute;
+      right: calc(var(--cell) * -0.5);
+      top: calc(var(--cell) * -0.125);
+      width: calc(var(--cell) * 1);
+    }
   }
 }
 

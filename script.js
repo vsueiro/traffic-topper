@@ -25,13 +25,13 @@ class Obstacles {
         w: 8,
         details: ["wheels", "glass"],
       },
-      // bike: {
-      //   allowedPositions: [1, 2],
-      //   y: 4,
-      //   h: 2,
-      //   w: 2,
-      // details: []
-      // },
+      bike: {
+        allowedPositions: [1, 2],
+        y: 4,
+        h: 2,
+        w: 2,
+        details: [],
+      },
       signal: {
         allowedPositions: [0, 1],
         y: 0,
@@ -39,13 +39,13 @@ class Obstacles {
         w: 1,
         details: [],
       },
-      // bridge: {
-      //   allowedPositions: [0],
-      //   y: 0,
-      //   h: 4,
-      //   w: 12,
-      //   details: []
-      // },
+      bridge: {
+        allowedPositions: [0],
+        y: 0,
+        h: 4,
+        w: 12,
+        details: [],
+      },
     };
 
     this.setup();
@@ -185,7 +185,7 @@ class Game {
     this.isWon = false;
     this.startTime;
     this.elapsedTime = 0;
-    this.timeLimit = 15 * 1000;
+    this.timeLimit = 30 * 1000;
     this.countdown = this.timeLimit;
 
     this.setup();
@@ -250,7 +250,7 @@ class Game {
     this.over = false;
     this.won = false;
 
-    this.grid = new Grid(this);
+    // this.grid = new Grid(this);
     this.taxi = new Taxi(this);
     this.taxiWheels = new TaxiWheels(this);
     this.controls = new Controls(this);
@@ -777,7 +777,7 @@ class Taxi {
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
     this.speed.min = 0.75;
-    this.speed.max = 0.75; //2.5;
+    this.speed.max = 2.5; //2.5;
     this.speed.x = 0.75;
     this.speed.decreaseX = -1; // % of screen per second
     this.speed.increaseX = 0.1; // % of screen per second
@@ -1232,6 +1232,12 @@ class Obstacle {
 
     // this.element.style.left = `${this.x * 100}%`;
     this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+
+    // if (this.name === "bus") {
+    //   this.element.style.translate = `calc( var(--cell) * ${
+    //     this.game.cols
+    //   } * .5)`;
+    // }
 
     if (this.x < this.game.bounds.left) {
       this.destroy();
