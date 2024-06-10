@@ -367,7 +367,6 @@ button.restart {
   outline: none;
   overflow: hidden;
   position: absolute;
-  position: relative;
   text-transform: uppercase;
   transition: all 0.05s;
   width: calc(var(--cell) * 2);
