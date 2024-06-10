@@ -496,6 +496,73 @@ button.restart {
   }
 }
 
+.obstacle.bus {
+  position: absolute;
+
+  &::before {
+    background: HotPink;
+    border: calc(var(--cell) * 0.0625) solid DeepPink;
+    border-radius: calc(var(--cell) * 0.5);
+    bottom: calc(var(--cell) * 0.5);
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.bus .wheels {
+  background-color: lightblue;
+  bottom: 0;
+  height: calc(var(--cell) * 1);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: initial;
+
+  &::before {
+    aspect-ratio: 1;
+    /* animation: spin var(--wheel-spin-duration) infinite linear; */
+    background: RebeccaPurple;
+    border: calc(var(--cell) * 0.25) solid Indigo;
+    border-bottom-color: hsl(275, 100%, 20%);
+    border-radius: 50%;
+    border-top-color: hsl(275, 100%, 20%);
+    bottom: 0;
+    box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
+      inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
+    content: "";
+    display: flex;
+    height: calc(var(--cell) * 1);
+    left: 0;
+    position: absolute;
+    right: initial;
+    /* transition: border-color 0.2s; */
+    width: calc(var(--cell) * 1);
+  }
+
+  &::after {
+    aspect-ratio: 1;
+    /* animation: spin var(--wheel-spin-duration) infinite linear; */
+    background: RebeccaPurple;
+    border: calc(var(--cell) * 0.25) solid Indigo;
+    border-bottom-color: hsl(275, 100%, 20%);
+    border-radius: 50%;
+    border-top-color: hsl(275, 100%, 20%);
+    bottom: 0;
+    box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
+      inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
+    content: "";
+    display: flex;
+    height: calc(var(--cell) * 1);
+    position: absolute;
+    right: 0;
+    /* transition: border-color 0.2s; */
+    width: calc(var(--cell) * 1);
+  }
+}
+
 /* .car::before {
   border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
     calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
