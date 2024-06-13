@@ -70,42 +70,20 @@ body {
 
 .taxi {
   animation: bump 2s infinite;
-  background: Tomato;
-  border-radius: calc(var(--cell) * 0.25) calc(var(--cell) * 0.75)
-    calc(var(--cell) * 0.125) calc(var(--cell) * 0.125);
-  overflow: hidden;
   position: absolute;
   transition: all var(--transitionDuration) var(--easeOutBack);
   z-index: 10;
 }
 
-/* .taxi::before {
+.taxi::before {
   background: Transparent;
-  border-radius: 50%;
-  bottom: calc(var(--cell) * -0.5);
-  box-shadow: ;
-  box-shadow: 0 0 0 calc(var(--cell) * 0.0625) rgba(102, 51, 153, 0.125),
-    inset 0 0 0 calc(var(--cell) * 1) rgba(102, 51, 153, 0.125),
-    calc(var(--cell) * 2) 0 0 calc(var(--cell) * 0.0625)
-      rgba(102, 51, 153, 0.125);
+  background: url(sprites/taxi-body.svg) no-repeat;
   content: "";
-  height: calc(var(--cell) * 1);
-  left: 0;
+  height: calc(var(--cell) * 1.7708333333);
+  left: calc(var(--cell) * -0.375);
   position: absolute;
-  width: calc(var(--cell) * 1);
-  z-index: 1;
-} */
-
-.taxi::after {
-  background: Indigo;
-  border-radius: calc(var(--cell) * 0.125) 0 0 calc(var(--cell) * 0.5);
-  content: "";
-  display: block;
-  height: calc(var(--cell) * 0.333);
-  position: absolute;
-  right: 0;
-  top: calc(var(--cell) * 0.333);
-  width: calc(var(--cell) * 1);
+  top: 0;
+  width: calc(var(--cell) * 3.5625);
   z-index: 1;
 }
 
@@ -165,24 +143,78 @@ body {
   }
 }
 
-.wheels {
-  /* background: black; */
+.taxi-wheels {
   bottom: 0;
+  left: 0;
   position: absolute;
+  right: 0;
   top: 100%;
   transition: all var(--transitionDuration) var(--easeOutBack);
   z-index: 11;
 }
 
-.wheel {
+.taxi-wheel {
   bottom: 0;
-  height: 100%;
   position: absolute;
+  top: calc(var(--cell) * 1.625);
   transition: all var(--transitionDuration) var(--easeOutBack);
-  width: 100%;
+  width: calc(var(--cell) * 0.75);
+
+  &.front {
+    left: initial;
+    right: calc(var(--cell) * 0.25);
+  }
+
+  &.rear {
+    left: calc(var(--cell) * 0.125);
+    right: initial;
+  }
+
+  .stretcher {
+    background: Lavender;
+    bottom: calc(var(--cell) * 0.375);
+    left: 50%;
+    position: absolute;
+    top: 0;
+    translate: -50%;
+    width: calc(var(--cell) * 0.0625);
+
+    &::before {
+      background: Lavender;
+      content: "";
+      height: 33.333%;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      translate: -50%;
+      width: calc(var(--cell) * 0.1875);
+    }
+
+    &::after {
+      background: Lavender;
+      content: "";
+      height: 33.333%;
+      left: 50%;
+      position: absolute;
+      top: 33.333%;
+      translate: -50%;
+      width: calc(var(--cell) * 0.125);
+    }
+  }
+
+  &::after {
+    background: url(sprites/taxi-wheel.svg) no-repeat;
+    bottom: 0;
+    content: "";
+    height: calc(var(--cell) * 0.75);
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
 }
 
-.wheel::before {
+/*
+.taxi-wheel::before {
   border-left: calc(var(--cell) * 0.125) solid Lavender;
   border-right: calc(var(--cell) * 0.125) solid Lavender;
   bottom: calc(var(--cell) * 0.5);
@@ -193,31 +225,15 @@ body {
   top: calc(var(--cell) * 1.5);
   transition: all var(--transitionDuration) var(--easeOutBack);
   z-index: -1;
+  background: red;
 }
-
-.wheel::after {
-  animation: spin var(--wheel-spin-duration) infinite linear;
-  background: RebeccaPurple;
-  border: calc(var(--cell) * 0.25) solid Indigo;
-  border-bottom-color: hsl(275, 100%, 20%);
-  border-radius: 50%;
-  border-top-color: hsl(275, 100%, 20%);
-  bottom: 0;
-  box-shadow: 0 0 0 calc(var(--cell) * 0) Indigo,
-    inset 0 0 0 calc(var(--cell) * 0.0625) Lavender;
-  content: "";
-  display: flex;
-  height: calc(var(--cell) * 1);
-  position: absolute;
-  transition: border-color 0.2s;
-  width: calc(var(--cell) * 1);
-}
+*/
 
 #game[data-over="true"] {
   .taxi {
     animation-duration: 0s;
   }
-  .wheel::after {
+  .taxi-wheel::after {
     animation-duration: 0s;
     border-color: hsl(275, 100%, 22.5%);
   }

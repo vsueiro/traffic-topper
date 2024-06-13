@@ -347,6 +347,8 @@ class TaxiWheels {
     this.element = document.createElement("div");
     this.front = document.createElement("div");
     this.rear = document.createElement("div");
+    this.frontStretcher = document.createElement("div");
+    this.rearStretcher = document.createElement("div");
 
     this.height = (1 / this.game.rows) * 2;
     this.width = (1 / this.game.cols) * 3;
@@ -360,21 +362,25 @@ class TaxiWheels {
   }
 
   setup() {
-    this.element.classList.add("wheels");
+    this.element.classList.add("taxi-wheels");
     this.element.style.width = `${this.width * 100}%`;
     // this.element.style.height = `${this.height * 100}%`;
     this.element.style.top = `${this.y * 100}%`;
     this.element.style.bottom = 0;
     this.element.style.left = `${this.x * 100}%`;
 
-    this.front.classList.add("wheel", "front");
-    this.front.style.left = `${this.game.taxi.x * 1}%`;
-    this.front.style.top = `${this.y * 100}%`;
+    this.front.classList.add("taxi-wheel", "front");
+    this.frontStretcher.classList.add("stretcher");
+    // this.front.style.left = `${this.game.taxi.x * 1}%`;
+    // this.front.style.top = `${this.y * 100}%`;
 
-    this.rear.classList.add("wheel", "rear");
-    this.rear.style.left = 0;
-    this.rear.style.top = `${this.y * 100}%`;
+    this.rear.classList.add("taxi-wheel", "rear");
+    this.rearStretcher.classList.add("stretcher");
+    // this.rear.style.left = 0;
+    // this.rear.style.top = `${this.y * 100}%`;
 
+    this.front.append(this.frontStretcher);
+    this.rear.append(this.rearStretcher);
     this.element.append(this.front);
     this.element.append(this.rear);
     this.game.element.append(this.element);
@@ -773,7 +779,7 @@ class Taxi {
     this.w = 3;
     this.h = 2;
     this.width = (1 / this.game.cols) * this.w;
-    this.height = (1 / this.game.rows) * (this.h - 0.5);
+    this.height = (1 / this.game.rows) * this.h;
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
     this.speed.min = 0.75;
