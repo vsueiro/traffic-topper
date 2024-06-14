@@ -78,6 +78,7 @@ body {
 .taxi::before {
   background: Transparent;
   background: url(sprites/taxi-body.svg) no-repeat;
+  background-size: 100%;
   content: "";
   height: calc(var(--cell) * 1.7708333333);
   left: calc(var(--cell) * -0.375);
@@ -204,6 +205,7 @@ body {
 
   &::after {
     background: url(sprites/taxi-wheel.svg) no-repeat;
+    background-size: 100%;
     bottom: 0;
     content: "";
     height: calc(var(--cell) * 0.75);
@@ -296,8 +298,8 @@ body {
     align-items: center;
     background: RebeccaPurple;
     border-radius: calc(var(--cell) * 0.25);
-    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
-      0 calc(var(--cell) * 0.25) 0 0 Tomato;
+    box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Coral,
+      0 calc(var(--cell) * 0.25) 0 0 Coral;
     color: Lavender;
     cursor: pointer;
     display: flex;
@@ -312,7 +314,7 @@ body {
     width: calc(var(--cell) * 2);
 
     &::before {
-      background: Tomato;
+      background: Coral;
       bottom: 0;
       content: "";
       display: block;
@@ -355,8 +357,8 @@ body {
     }
 
     &[data-pressed="true"] {
-      box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Tomato,
-        0 calc(var(--cell) * 0.125) 0 0 Tomato;
+      box-shadow: inset 0 0 0 calc(var(--cell) * 0.0625) Coral,
+        0 calc(var(--cell) * 0.125) 0 0 Coral;
       translate: 0 calc(var(--cell) * 0.125);
 
       &::before {
@@ -975,7 +977,7 @@ button.restart {
   animation-delay: calc(var(--transitionDuration) * 2);
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
-  background: Tomato;
+  background: Coral;
   position: absolute;
   transform-origin: left bottom;
   translate: calc(var(--cell) * -5) 0;
