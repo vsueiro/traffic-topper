@@ -77,7 +77,7 @@ body {
 
 .taxi::before {
   background: Transparent;
-  background: url(sprites/taxi-body.svg) no-repeat;
+  background: url(sprites/taxi-body-yellower-chessboard.svg) no-repeat;
   background-size: 100%;
   content: "";
   height: calc(var(--cell) * 1.7708333333);
@@ -214,22 +214,6 @@ body {
     right: 0;
   }
 }
-
-/*
-.taxi-wheel::before {
-  border-left: calc(var(--cell) * 0.125) solid Lavender;
-  border-right: calc(var(--cell) * 0.125) solid Lavender;
-  bottom: calc(var(--cell) * 0.5);
-  content: "";
-  left: calc(var(--cell) * 0.5);
-  position: absolute;
-  right: calc(var(--cell) * 0.5);
-  top: calc(var(--cell) * 1.5);
-  transition: all var(--transitionDuration) var(--easeOutBack);
-  z-index: -1;
-  background: red;
-}
-*/
 
 #game[data-over="true"] {
   .taxi {
