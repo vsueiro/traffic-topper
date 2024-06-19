@@ -109,7 +109,6 @@ class Obstacles {
     }
   }
 
-  setup() {
   setup() {}
 
   add(item) {
