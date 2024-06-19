@@ -46,6 +46,13 @@ class Obstacles {
         w: 12,
         details: [],
       },
+      stop: {
+        allowedPositions: [0, 2],
+        y: 2.5,
+        h: 1,
+        w: 1,
+        details: [],
+      },
     };
 
     this.setup();

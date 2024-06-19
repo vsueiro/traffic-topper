@@ -182,6 +182,7 @@ body {
 
     &::before {
       background: Lavender;
+      border-bottom: calc(var(--cell) * 0.0625) solid RebeccaPurple;
       content: "";
       height: 33.333%;
       left: 50%;
@@ -189,17 +190,16 @@ body {
       top: 0;
       translate: -50%;
       width: calc(var(--cell) * 0.1875);
-      border-bottom: calc(var(--cell) * 0.0625) solid RebeccaPurple;
     }
 
     &::after {
       background: Lavender;
+      border-bottom: calc(var(--cell) * 0.0625) solid RebeccaPurple;
       content: "";
       height: 33.333%;
       left: 50%;
       position: absolute;
       top: 33.333%;
-      border-bottom: calc(var(--cell) * 0.0625) solid RebeccaPurple;
       translate: -50%;
       width: calc(var(--cell) * 0.125);
     }
@@ -423,6 +423,7 @@ button.restart {
   z-index: 5;
 }
 
+/* TEMP */
 .obstacle::before {
   background: Plum;
   border-radius: calc(var(--cell) * 0.25);
@@ -432,6 +433,30 @@ button.restart {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.obstacle.stop {
+  &::before {
+    background: var(--indigo-50);
+    border-radius: 0;
+    content: "";
+    height: calc(var(--cell) * 2.5);
+    left: calc(50% - calc(var(--cell) * 0.0625));
+    position: absolute;
+    top: calc(var(--cell) * 1);
+    width: calc(var(--cell) * 0.125);
+  }
+
+  &::after {
+    background: url(sprites/stop.svg) no-repeat;
+    background-size: 100%;
+    content: "";
+    height: calc(var(--cell) * 1.125);
+    left: calc(var(--cell) * -0.0625);
+    position: absolute;
+    top: calc(var(--cell) * -0.0625);
+    width: calc(var(--cell) * 1.125);
+  }
 }
 
 @keyframes flashing {
