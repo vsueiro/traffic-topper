@@ -6,8 +6,8 @@ class Obstacles {
     this.game = game;
     this.list = [];
     this.isFirst = true;
-    this.gap = 1;
-    this.gapMin = 1;
+    this.gap = 3;
+    this.gapMin = 3;
     this.gapMax = 12;
 
     this.kinds = {
