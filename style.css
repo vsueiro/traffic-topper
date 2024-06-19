@@ -74,7 +74,7 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 999;
+  z-index: 998;
 }
 
 .taxi {
@@ -571,16 +571,16 @@ button.restart {
   top: 0;
 
   &::before {
-    background: url(sprites/foreground-tunnel-taller.svg) no-repeat;
+    background: url(sprites/foreground-tunnel.svg) no-repeat;
     background-size: 100%;
     content: "";
     display: block;
     height: calc(var(--cell) * 5);
     left: calc(var(--cell) * 0);
+    opacity: 0.9;
     position: absolute;
     top: calc(var(--cell) * 1);
     width: calc(var(--cell) * 10.0625);
-    opacity: 0.9;
   }
 }
 
@@ -728,7 +728,7 @@ button.restart {
   scale: 0.0625;
   transition: scale 0.1s var(--easeOutBack);
   translate: -50% -50%;
-  z-index: 13;
+  z-index: 999;
 }
 
 .scoreboard {
