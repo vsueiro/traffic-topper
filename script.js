@@ -47,9 +47,9 @@ class Obstacles {
         details: [],
       },
       stop: {
-        allowedPositions: [0, 2],
-        y: 2.5,
-        h: 1,
+        allowedPositions: [2],
+        y: 2,
+        h: 4,
         w: 1,
         details: [],
       },

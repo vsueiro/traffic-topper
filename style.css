@@ -437,25 +437,26 @@ button.restart {
 
 .obstacle.stop {
   &::before {
-    background: var(--indigo-50);
+    display: none;
+    /* background: var(--indigo-50);
     border-radius: 0;
     content: "";
     height: calc(var(--cell) * 2.5);
     left: calc(50% - calc(var(--cell) * 0.0625));
     position: absolute;
     top: calc(var(--cell) * 1);
-    width: calc(var(--cell) * 0.125);
+    width: calc(var(--cell) * 0.125); */
   }
 
   &::after {
-    background: url(sprites/stop.svg) no-repeat;
+    background: url(sprites/stop-cone.svg) no-repeat;
     background-size: 100%;
     content: "";
-    height: calc(var(--cell) * 1.125);
-    left: calc(var(--cell) * -0.0625);
+    height: calc(var(--cell) * 3.6875);
+    left: calc(var(--cell) * -0.125);
     position: absolute;
-    top: calc(var(--cell) * -0.0625);
-    width: calc(var(--cell) * 1.125);
+    top: calc(var(--cell) * 0.3125);
+    width: calc(var(--cell) * 1.6875);
   }
 }
 
