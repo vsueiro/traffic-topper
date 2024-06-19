@@ -25,11 +25,11 @@ class Obstacles {
         w: 8,
         details: ["wheels", "glass"],
       },
-      bike: {
+      barrier: {
         allowedPositions: [1, 2],
         y: 4,
         h: 2,
-        w: 2,
+        w: 3,
         details: [],
       },
       signal: {

@@ -524,6 +524,19 @@ button.restart {
   }
 }
 
+.obstacle.barrier {
+  &::before {
+    background: url(sprites/barrier-2.svg) no-repeat;
+    background-size: 100%;
+    content: "";
+    height: calc(var(--cell) * 3.0625);
+    left: calc(var(--cell) * -0.0625);
+    position: absolute;
+    top: calc(var(--cell) * -0.0625);
+    width: calc(var(--cell) * 3.5);
+  }
+}
+
 .obstacle.bus {
   position: absolute;
 
