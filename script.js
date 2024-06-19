@@ -39,12 +39,19 @@ class Obstacles {
         w: 1,
         details: [],
       },
-      bridge: {
+      // bridge: {
+      //   allowedPositions: [0],
+      //   y: 0,
+      //   h: 4,
+      //   w: 12,
+      //   details: [],
+      // },
+      tunnel: {
         allowedPositions: [0],
-        y: 0,
-        h: 4,
-        w: 12,
-        details: [],
+        y: 4,
+        h: 2,
+        w: 10,
+        details: ["foreground-tunnel"],
       },
       stop: {
         allowedPositions: [2],
@@ -256,6 +263,10 @@ class Game {
   setup() {
     this.over = false;
     this.won = false;
+
+    this.foreground = document.createElement("div");
+    this.foreground.classList.add("foreground");
+    this.element.append(this.foreground);
 
     // this.grid = new Grid(this);
     this.taxi = new Taxi(this);
@@ -1161,6 +1172,8 @@ class Obstacle {
     this.x = this.game.bounds.right;
     this.y = (1 / this.game.rows) * this.kind.y;
 
+    this.foregroundElements = [];
+
     this.setup();
   }
 
@@ -1207,8 +1220,16 @@ class Obstacle {
     if (visually) {
       // TODO: Add animation before complete removal
       this.element.remove();
+
+      for (let element of this.foregroundElements) {
+        element.remove();
+      }
     } else {
       this.element.remove();
+
+      for (let element of this.foregroundElements) {
+        element.remove();
+      }
     }
 
     const index = this.game.obstacles.list.indexOf(this);
@@ -1228,7 +1249,13 @@ class Obstacle {
     for (let detail of this.kind.details) {
       const div = document.createElement("div");
       div.classList.add(detail);
-      this.element.append(div);
+
+      if (detail.startsWith("foreground")) {
+        this.game.foreground.append(div);
+        this.foregroundElements.push(div);
+      } else {
+        this.element.append(div);
+      }
     }
 
     this.game.element.append(this.element);
@@ -1245,6 +1272,10 @@ class Obstacle {
 
     // this.element.style.left = `${this.x * 100}%`;
     this.element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+
+    for (let element of this.foregroundElements) {
+      element.style.translate = `calc( var(--cell) * ${this.game.cols} * ${this.x})`;
+    }
 
     // if (this.name === "bus") {
     //   this.element.style.translate = `calc( var(--cell) * ${

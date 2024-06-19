@@ -68,6 +68,15 @@ body {
   width: 100%;
 }
 
+#game .foreground {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 999;
+}
+
 .taxi {
   animation: bump 2s infinite;
   position: absolute;
@@ -438,14 +447,6 @@ button.restart {
 .obstacle.stop {
   &::before {
     display: none;
-    /* background: var(--indigo-50);
-    border-radius: 0;
-    content: "";
-    height: calc(var(--cell) * 2.5);
-    left: calc(50% - calc(var(--cell) * 0.0625));
-    position: absolute;
-    top: calc(var(--cell) * 1);
-    width: calc(var(--cell) * 0.125); */
   }
 
   &::after {
@@ -535,6 +536,51 @@ button.restart {
     position: absolute;
     top: calc(var(--cell) * -0.0625);
     width: calc(var(--cell) * 3.5);
+  }
+}
+
+.obstacle.tunnel {
+  &::before {
+    display: none;
+    /* position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: red;
+    border-radius: 0; */
+  }
+
+  &::after {
+    background: url(sprites/tunnel.svg) no-repeat;
+    background-size: 100%;
+    content: "";
+    height: calc(var(--cell) * 12);
+    left: calc(var(--cell) * -2.0625);
+    position: absolute;
+    top: calc(var(--cell) * -10);
+    width: calc(var(--cell) * 12.125);
+  }
+}
+
+.foreground-tunnel {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &::before {
+    background: url(sprites/foreground-tunnel-taller.svg) no-repeat;
+    background-size: 100%;
+    content: "";
+    display: block;
+    height: calc(var(--cell) * 5);
+    left: calc(var(--cell) * 0);
+    position: absolute;
+    top: calc(var(--cell) * 1);
+    width: calc(var(--cell) * 10.0625);
+    opacity: 0.9;
   }
 }
 
