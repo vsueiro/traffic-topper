@@ -661,6 +661,8 @@ button.restart {
   /* background: DeepPink; */
   border: calc(var(--cell) * 0.25) solid DeepPink;
   border-radius: 50%;
+  box-shadow: 0 0 24px rgba(76, 0, 130, 0.5),
+    inset 0 0 24px rgba(76, 0, 130, 0.5);
   /* opacity: 0.75; */
   position: absolute;
   scale: 0.0625;
