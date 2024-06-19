@@ -70,10 +70,13 @@ class Obstacles {
       return "car";
     }
 
+    const last = this.list.length > 0 ? this.list.at(-1) : undefined;
     const list = [];
 
     for (let key in this.kinds) {
-      list.push(key);
+      if (last && last.name !== key) {
+        list.push(key);
+      }
     }
 
     const index = Math.floor(Math.random() * list.length);
@@ -107,8 +110,7 @@ class Obstacles {
   }
 
   setup() {
-    this.randomObstacle;
-  }
+  setup() {}
 
   add(item) {
     this.list.push(item);
