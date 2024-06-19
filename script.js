@@ -321,6 +321,7 @@ class Game {
             obstacle.kind.allowedPositions
           )
         ) {
+          obstacle.destroy();
           obstacle = new Obstacle(this);
         }
       }
