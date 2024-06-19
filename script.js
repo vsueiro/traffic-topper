@@ -50,7 +50,7 @@ class Obstacles {
         allowedPositions: [0],
         y: 4,
         h: 2,
-        w: 10,
+        w: 9,
         details: ["foreground-tunnel"],
       },
       stop: {
