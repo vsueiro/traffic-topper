@@ -805,7 +805,7 @@ class Taxi {
     this.x = (1 / this.game.cols) * 1;
     this.speed = {}; // % of screen per second
     this.speed.min = 0.75;
-    this.speed.max = 2.5; //2.5;
+    this.speed.max = 1.5; //2.5;
     this.speed.x = 0.75;
     this.speed.decreaseX = -1; // % of screen per second
     this.speed.increaseX = 0.1; // % of screen per second
