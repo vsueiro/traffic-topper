@@ -13,6 +13,7 @@ class Obstacles {
     this.kinds = {
       car: {
         allowedPositions: [1, 2],
+        allowsMovement: true,
         y: 4,
         h: 2,
         w: 3,
@@ -20,6 +21,7 @@ class Obstacles {
       },
       bus: {
         allowedPositions: [2],
+        allowsMovement: true,
         y: 2,
         h: 4,
         w: 8,
@@ -27,6 +29,7 @@ class Obstacles {
       },
       barrier: {
         allowedPositions: [1, 2],
+        allowsMovement: true,
         y: 4,
         h: 2,
         w: 3,
@@ -34,6 +37,7 @@ class Obstacles {
       },
       signal: {
         allowedPositions: [0, 1],
+        allowsMovement: true,
         y: 0,
         h: 2,
         w: 1,
@@ -48,6 +52,7 @@ class Obstacles {
       // },
       tunnel: {
         allowedPositions: [0],
+        allowsMovement: false,
         y: 4,
         h: 2,
         w: 9,
@@ -55,6 +60,7 @@ class Obstacles {
       },
       stop: {
         allowedPositions: [2],
+        allowsMovement: true,
         y: 2,
         h: 4,
         w: 1,
@@ -63,6 +69,14 @@ class Obstacles {
     };
 
     this.setup();
+  }
+
+  get current() {
+    for (let obstacle of this.list) {
+      if (obstacle.isCurrent) {
+        return obstacle;
+      }
+    }
   }
 
   get randomObstacle() {
@@ -123,19 +137,10 @@ class Scoreboard {
     this.element = document.createElement("div");
     this.progress = document.createElement("div");
     this.progressIndicator = document.createElement("div");
-    // this.scoreElement = document.createElement("div");
     this.timeElement = document.createElement("div");
     this.bounceCount = 0;
 
     this.setup();
-  }
-
-  get bounce() {
-    return this.bounceCount;
-  }
-
-  set bounce(increment) {
-    this.bounceCount += increment;
   }
 
   toSeconds(ms) {
@@ -148,7 +153,6 @@ class Scoreboard {
     this.progress.classList.add("progress");
     this.progressIndicator.classList.add("indicator");
     this.timeElement.classList.add("time");
-    // this.scoreElement.classList.add("score");
 
     this.progress.append(this.progressIndicator);
     this.element.append(this.progress);
@@ -161,8 +165,6 @@ class Scoreboard {
 
     const percentage = (this.game.countdown / this.game.timeLimit) * 100;
     this.progressIndicator.style.scale = `${percentage / 100} 1`;
-
-    // this.scoreElement.textContent = `Bounced ${this.bounce}x`;
   }
 }
 
@@ -964,6 +966,13 @@ class Taxi {
       return;
     }
 
+    const current = this.game.obstacles.current;
+
+    if (current && !current.kind.allowsMovement) {
+      console.log("Can’t move inside " + current.name);
+      return;
+    }
+
     this.game.controls.pressButton(step > 0 ? "up" : "down");
 
     this.oldPosition = this.position;
@@ -976,10 +985,6 @@ class Taxi {
     } else if (this.position < this.min) {
       this.poke("down");
       this.position = this.min;
-    }
-
-    if (this.position !== this.oldPosition) {
-      this.game.scoreboard.bounce = +1;
     }
 
     this.update();
@@ -1206,6 +1211,12 @@ class Obstacle {
     // }
 
     return true;
+  }
+
+  get isCurrent() {
+    const taxi = this.game.taxi;
+    const hasEntered = taxi.x + taxi.width > this.x;
+    return hasEntered && !this.isCleared;
   }
 
   get isCleared() {
