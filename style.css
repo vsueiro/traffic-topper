@@ -584,6 +584,32 @@ button.restart {
   }
 }
 
+.obstacle.billboard {
+  &::before {
+    display: none;
+  }
+
+  .ad {
+    background: Lavender;
+    bottom: calc(var(--cell) * 0.0625);
+    left: calc(var(--cell) * 0.0625);
+    position: absolute;
+    right: calc(var(--cell) * 0.0625);
+    top: calc(var(--cell) * 0.0625);
+  }
+
+  &::after {
+    background: url(sprites/billboard.svg) no-repeat;
+    background-size: 100%;
+    content: "";
+    height: calc(var(--cell) * 6);
+    left: calc(var(--cell) * 0);
+    position: absolute;
+    top: calc(var(--cell) * 0);
+    width: calc(var(--cell) * 9);
+  }
+}
+
 .obstacle.bus {
   position: absolute;
 

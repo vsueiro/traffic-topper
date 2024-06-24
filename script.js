@@ -43,6 +43,13 @@ class Obstacles {
         w: 1,
         details: [],
       },
+      billboard: {
+        allowedPositions: [0],
+        y: 0,
+        h: 3,
+        w: 9,
+        details: ["ad"],
+      },
       // bridge: {
       //   allowedPositions: [0],
       //   y: 0,
