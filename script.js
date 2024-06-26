@@ -820,7 +820,7 @@ class Taxi {
     this.offsetX = 0;
     this.timeOfLastUpdate = 0;
     this.pokeTimeout;
-    this.autopilot = true;
+    this.autopilot = false;
     this.isBreaking = false;
 
     this.setup();
