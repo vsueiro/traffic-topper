@@ -45,6 +45,7 @@ class Obstacles {
       },
       billboard: {
         allowedPositions: [0],
+        allowsMovement: true,
         y: 0,
         h: 3,
         w: 9,
