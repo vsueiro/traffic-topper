@@ -610,6 +610,24 @@ button.restart {
   }
 }
 
+.obstacle.car {
+  &::before {
+    display: none;
+  }
+
+  &::after {
+    background: url(sprites/car-hatch.svg) no-repeat;
+    background-position: center bottom;
+    background-size: 100%;
+    bottom: 0;
+    content: "";
+    left: calc(var(--cell) * -0.09375);
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
 .obstacle.bus {
   position: absolute;
 
